@@ -7,8 +7,8 @@ public class Libro implements Serializable {
 
     private int id;
     private String isbn;
-    private String titulo;
-    private String descripcion;
+    private String lib_titulo;
+    private String lib_descripcion;
     private String imagen;
     private int categoria;
     private int subCategoria;
@@ -43,19 +43,19 @@ public class Libro implements Serializable {
     }
 
     public String getTitulo() {
-        return titulo;
+        return lib_titulo;
     }
 
     public void setTitulo(String titulo) {
-        this.titulo = titulo;
+        this.lib_titulo = titulo;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return lib_descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+        this.lib_descripcion = descripcion;
     }
 
     public String getImagen() {
