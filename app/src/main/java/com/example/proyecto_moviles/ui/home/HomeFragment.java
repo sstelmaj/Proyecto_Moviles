@@ -34,9 +34,6 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         libroPrueba1.setId(1);
         libroPrueba1.setIsbn("978-8490353787");
         libroPrueba1.setTitulo("Introducción a la programación con Python");

@@ -13,13 +13,20 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.databinding.ActivityMainBinding;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityMainBinding binding;
+
+    private List<ListElement> elementos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        init();
     }
 
     @Override
@@ -61,5 +70,21 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public void init(){
+        elementos = new ArrayList<>();
+        elementos.add(new ListElement("black", "Sherlock Holmes", "Artur Conan Doyle", "Misterio"));
+        elementos.add(new ListElement("black", "Harry Potter", "J.K Rowling", "Fantasia"));
+        elementos.add(new ListElement("black", "Eragorn", "Edward Kyle", "Fantasia"));
+        elementos.add(new ListElement("black", "La secta", "Camilla Läckberg", "Novela Ligera"));
+        elementos.add(new ListElement("black", "Romper el círculo", "Colleen Hoover", "Novela contemporánea"));
+        elementos.add(new ListElement("black", "Hábitos atómicos", "James Clear", "Autoayuda"));
+
+        ListAdapter listAdapter = new ListAdapter(elementos, this);
+        RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(listAdapter);
     }
 }
