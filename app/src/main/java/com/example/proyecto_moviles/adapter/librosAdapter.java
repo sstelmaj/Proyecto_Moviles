@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,15 +33,15 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
     }
     //A view holder inner class where we get reference to the views in the layout using their ID
     public static class LibroViewHolder extends RecyclerView.ViewHolder {
-        ConstraintLayout librosLayout;
+        CardView librosLayout;
         TextView libroTitle;
         TextView data;
         ImageView libroImage;
         public LibroViewHolder(View v) {
             super(v);
-            librosLayout = (ConstraintLayout) v.findViewById(R.id.libros_layout);
-            libroTitle = (TextView) v.findViewById(R.id.libro_titulo);
-            data = (TextView) v.findViewById(R.id.libro_descripcion);
+            librosLayout = (CardView) v.findViewById(R.id.nombre);
+            libroTitle = (TextView) v.findViewById(R.id.titulo);
+            data = (TextView) v.findViewById(R.id.autor);
         }
     }
     @Override

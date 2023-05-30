@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class librosApiAdapter {
     private static librosApiService API_SERVICE;
 
-    private static final String BASE_URL = "http://10.0.2.2:3000/";
+    private static final String BASE_URL = "http://192.168.1.8:3000/";
 
     public static librosApiService getApiService() {
         // Creamos un interceptor y le indicamos el log level a usar
