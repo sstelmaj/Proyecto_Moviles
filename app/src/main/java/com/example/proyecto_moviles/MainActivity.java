@@ -73,18 +73,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void init(){
-        elementos = new ArrayList<>();
-        elementos.add(new ListElement("black", "Sherlock Holmes", "Artur Conan Doyle", "Misterio"));
-        elementos.add(new ListElement("black", "Harry Potter", "J.K Rowling", "Fantasia"));
-        elementos.add(new ListElement("black", "Eragorn", "Edward Kyle", "Fantasia"));
-        elementos.add(new ListElement("black", "La secta", "Camilla Läckberg", "Novela Ligera"));
-        elementos.add(new ListElement("black", "Romper el círculo", "Colleen Hoover", "Novela contemporánea"));
-        elementos.add(new ListElement("black", "Hábitos atómicos", "James Clear", "Autoayuda"));
 
-        ListAdapter listAdapter = new ListAdapter(elementos, this);
-        RecyclerView recyclerView = findViewById(R.id.listRecyclerView);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(listAdapter);
     }
 }

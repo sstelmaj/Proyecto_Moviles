@@ -1,6 +1,9 @@
 package com.example.proyecto_moviles.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
+//import android.telecom.Call;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +12,39 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyecto_moviles.ListAdapter;
+import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
 
+import com.example.proyecto_moviles.R;
+import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
+import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.utils.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
 
-    private TextView titulo;
+    //private Retrofit retrofit;
+    private librosAdapter adapter;
 
-    private Libro libroPrueba1 = new Libro();
-    private Libro libroPrueba2= new Libro();
+    private List<ListElement> elementos;
+
+    private RecyclerView recyclerView;
+    //private Libro libroPrueba1 = new Libro();
+    //private Libro libroPrueba2 = new Libro();
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -34,23 +55,12 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        libroPrueba1.setId(1);
-        libroPrueba1.setIsbn("978-8490353787");
-        libroPrueba1.setTitulo("Introducción a la programación con Python");
-        libroPrueba1.setDescripcion("Este libro es una introducción a la programación en Python, un lenguaje de programación muy popular y poderoso que se utiliza en una gran variedad de campos, desde la informática hasta la biología.");
-        libroPrueba1.setImagen("https://m.media-amazon.com/images/I/41QZyv4q+GL._SY346_.jpg");
-        libroPrueba1.setCategoria(1);
-        libroPrueba1.setSubCategoria(3);
-        libroPrueba1.setUrl("https://www.amazon.com/-/es/Nilo-Ney-Coutinho-Menezes-ebook/dp/B072YX6K8R");
-        libroPrueba1.setStock(10);
-        libroPrueba1.setAutores("John Guttag");
-        libroPrueba1.setEdicion("3");
-        //libroPrueba1.setFechaLanzamiento( (Date)"2015-07-28");        "lib_fecha_lanzamiento": "2015-07-28",
-        libroPrueba1.setNovedades('N');
-        libroPrueba1.setIdioma("Español");
-        libroPrueba1.setDisponible('N');
-        libroPrueba1.setVigente('S');
-        libroPrueba1.setPuntuacion(4.7);
+        recyclerView = binding.listRecyclerView;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+
+        connectAndGetApiData();
+        //init();
 
         return root;
     }
@@ -59,5 +69,38 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    public void connectAndGetApiData() {
+        Call<List<Libro>> call = librosApiAdapter.getApiService().getLibros();
+        call.enqueue(new Callback<List<Libro>>(){
+            @Override
+            public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
+                if (response.isSuccessful()) {
+                    List<Libro> libros=response.body();
+                    adapter = new librosAdapter(libros, R.layout.list_element, getActivity());
+                    recyclerView.setAdapter(adapter);
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Libro>> call, Throwable t) {
+            }
+        });
+    }
+
+    public void init(){
+        elementos = new ArrayList<>();
+        elementos.add(new ListElement("black", "Sherlock Holmes", "Artur Conan Doyle", "Misterio"));
+        elementos.add(new ListElement("black", "Harry Potter", "J.K Rowling", "Fantasia"));
+        elementos.add(new ListElement("black", "Eragorn", "Edward Kyle", "Fantasia"));
+        elementos.add(new ListElement("black", "La secta", "Camilla Läckberg", "Novela Ligera"));
+        elementos.add(new ListElement("black", "Romper el círculo", "Colleen Hoover", "Novela contemporánea"));
+        elementos.add(new ListElement("black", "Hábitos atómicos", "James Clear", "Autoayuda"));
+
+        ListAdapter listAdapter = new ListAdapter(elementos, this.getContext());
+        RecyclerView recyclerView = binding.listRecyclerView;
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+        recyclerView.setAdapter(listAdapter);
     }
 }
