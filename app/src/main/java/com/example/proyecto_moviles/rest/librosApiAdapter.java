@@ -1,5 +1,7 @@
 package com.example.proyecto_moviles.rest;
 
+import com.example.proyecto_moviles.Config;
+
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -8,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class librosApiAdapter {
     private static librosApiService API_SERVICE;
 
-    private static final String BASE_URL = "http://192.168.1.8:3000/";
+    private static final String BASE_URL = Config.API_BASE_URL;
 
     public static librosApiService getApiService() {
         // Creamos un interceptor y le indicamos el log level a usar
