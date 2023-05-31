@@ -34,4 +34,4 @@ google-services.json
 
 *.xml/network_security_config.xml
 
-*.Config.java
+app/src/main/java/com/example/proyecto_moviles/Config.java
