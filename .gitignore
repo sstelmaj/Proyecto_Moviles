@@ -33,7 +33,7 @@ google-services.json
 *.hprof
 
 
-app/src/main/java/com/example/proyecto_moviles/Config.java
+app/src/main/java/com/example/proyecto_moviles/utils/Config.java
 
 *.xml/network_security_config.xml
 

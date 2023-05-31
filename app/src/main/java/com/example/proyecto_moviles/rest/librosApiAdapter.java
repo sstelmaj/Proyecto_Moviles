@@ -1,6 +1,6 @@
 package com.example.proyecto_moviles.rest;
 
-import com.example.proyecto_moviles.Config;
+import com.example.proyecto_moviles.utils.Config;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
