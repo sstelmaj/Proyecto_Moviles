@@ -1,5 +1,7 @@
 package com.example.proyecto_moviles.Modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +16,7 @@ public class Libro implements Serializable {
     private int subCategoria;
     private String url;
     private int stock;
+    @SerializedName("lib_autores")
     private String autores;
     private String edicion;
     private Date fechaLanzamiento;

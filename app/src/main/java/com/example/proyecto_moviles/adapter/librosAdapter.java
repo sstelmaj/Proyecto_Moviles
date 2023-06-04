@@ -60,7 +60,8 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.movieImage);*/
         holder.libroTitle.setText(libros.get(position).getTitulo());
-        holder.data.setText(libros.get(position).getDescripcion());
+        //holder.data.setText(libros.get(position).getDescripcion());
+        holder.data.setText(libros.get(position).getAutores());
 
         //enlazamos el clicklistener al item
         View.OnClickListener listener = new View.OnClickListener() {
