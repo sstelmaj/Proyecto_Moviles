@@ -1,26 +1,45 @@
 package com.example.proyecto_moviles.Modelo;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Libro implements Serializable {
 
+    @SerializedName("id")
     private int id;
+    @SerializedName("lib_isbn")
     private String isbn;
+    @SerializedName("lib_titulo")
     private String lib_titulo;
+    @SerializedName("lib_descripcion")
     private String lib_descripcion;
+    @SerializedName("lib_imagen")
     private String imagen;
+    @SerializedName("lib_categoria")
     private int categoria;
+    @SerializedName("lib_sub_categoria")
     private int subCategoria;
+    @SerializedName("lib_url")
     private String url;
+    @SerializedName("lib_stock")
     private int stock;
+    @SerializedName("lib_autores")
     private String autores;
+    @SerializedName("lib_edicion")
     private String edicion;
+    @SerializedName("lib_fecha_lanzamiento")
     private Date fechaLanzamiento;
+    @SerializedName("lib_novedades")
     private char novedades;
+    @SerializedName("lib_idioma")
     private String idioma;
+    @SerializedName("lib_disponible")
     private char disponible;
+    @SerializedName("lib_vigente")
     private char vigente;
+    @SerializedName("lib_puntuacion")
     private Double puntuacion;
 
     public Libro() {
