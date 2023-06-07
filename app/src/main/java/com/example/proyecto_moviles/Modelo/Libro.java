@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Libro implements Serializable {
-
     private int id;
     private String isbn;
     private String lib_titulo;
     private String lib_descripcion;
+    @SerializedName("lib_imagen")
     private String imagen;
     private int categoria;
     private int subCategoria;
