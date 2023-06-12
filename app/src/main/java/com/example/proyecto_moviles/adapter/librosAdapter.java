@@ -6,11 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.Modelo.Libro;
@@ -39,7 +37,7 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
         ImageView libroImage;
         public LibroViewHolder(View v) {
             super(v);
-            librosLayout = (CardView) v.findViewById(R.id.nombre);
+            librosLayout = (CardView) v.findViewById(R.id.ultimos_vistos_list);
             libroTitle = (TextView) v.findViewById(R.id.titulo);
             data = (TextView) v.findViewById(R.id.autor);
         }

@@ -1,32 +1,23 @@
 package com.example.proyecto_moviles.ui.home;
 
-import android.content.Intent;
 import android.os.Bundle;
-//import android.telecom.Call;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.ListAdapter;
-import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
 
-import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.librosAdapter;
+import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
+import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
-import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,31 +27,48 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-
-    //private Retrofit retrofit;
-    private librosAdapter adapter;
-
-    private List<ListElement> elementos;
-
-    private RecyclerView recyclerView;
-    //private Libro libroPrueba1 = new Libro();
-    //private Libro libroPrueba2 = new Libro();
+    private HomeRecommendedAdapter recommendedAdapter;
+    private LastSeenAdapter lastSeenAdapter;
+    private List<Libro> librosRecomendados;
+    private List<Libro> librosUltimosVistos;
+    private RecyclerView rv_recomendados;
+    private RecyclerView rv_ultimos_vistos;
+    private LinearLayoutManager layoutManagerRecomendados;
+    private LinearLayoutManager layoutManagerUltimosVistos;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        recyclerView = binding.listRecyclerView;
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        rv_recomendados = binding.horizontalRecommended;
+        rv_ultimos_vistos = binding.ultimosVistosList;
 
-        connectAndGetApiData();
-        //init();
+//        connectAndGetApiData();
+        librosRecomendados = new ArrayList<>();
+        librosRecomendados.add(new Libro("Sherlock Holmes", "Artur Conan Doyle"));
+        librosRecomendados.add(new Libro("Harry Potter", "J.K Rowling"));
+        librosRecomendados.add(new Libro("Eragorn", "Edward Kyle"));
+        librosRecomendados.add(new Libro("La secta", "Camilla Läckberg"));
+        librosRecomendados.add(new Libro("Sherlock Holmes 2", "Artur Conan Doyle"));
+        librosRecomendados.add(new Libro("Harry Potter 2", "J.K Rowling"));
+        librosRecomendados.add(new Libro("Eragorn 2", "Edward Kyle"));
+        librosRecomendados.add(new Libro("La secta 2", "Camilla Läckberg"));
+
+        layoutManagerRecomendados = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
+        recommendedAdapter = new HomeRecommendedAdapter(librosRecomendados, this.getContext());
+        rv_recomendados.setLayoutManager(layoutManagerRecomendados);
+        rv_recomendados.setAdapter(recommendedAdapter);
+
+        librosUltimosVistos = new ArrayList<>();
+        librosUltimosVistos.add(new Libro("Viaje al centro de la tierra", "Julio Verne"));
+        librosUltimosVistos.add(new Libro("Memoria del fuego", "Eduardo Galeano"));
+        layoutManagerUltimosVistos = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
+        lastSeenAdapter = new LastSeenAdapter(librosUltimosVistos, this.getContext());
+        rv_ultimos_vistos.setLayoutManager(layoutManagerUltimosVistos);
+        rv_ultimos_vistos.setAdapter(lastSeenAdapter);
 
         return root;
     }
@@ -78,29 +86,13 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
                 if (response.isSuccessful()) {
                     List<Libro> libros=response.body();
-                    adapter = new librosAdapter(libros, R.layout.list_element, getActivity());
-                    recyclerView.setAdapter(adapter);
+                    recommendedAdapter = new HomeRecommendedAdapter(libros, getActivity());
+                    rv_recomendados.setAdapter(recommendedAdapter);
                 }
             }
             @Override
             public void onFailure(Call<List<Libro>> call, Throwable t) {
             }
         });
-    }
-
-    public void init(){
-        elementos = new ArrayList<>();
-        elementos.add(new ListElement("black", "Sherlock Holmes", "Artur Conan Doyle", "Misterio"));
-        elementos.add(new ListElement("black", "Harry Potter", "J.K Rowling", "Fantasia"));
-        elementos.add(new ListElement("black", "Eragorn", "Edward Kyle", "Fantasia"));
-        elementos.add(new ListElement("black", "La secta", "Camilla Läckberg", "Novela Ligera"));
-        elementos.add(new ListElement("black", "Romper el círculo", "Colleen Hoover", "Novela contemporánea"));
-        elementos.add(new ListElement("black", "Hábitos atómicos", "James Clear", "Autoayuda"));
-
-        ListAdapter listAdapter = new ListAdapter(elementos, this.getContext());
-        RecyclerView recyclerView = binding.listRecyclerView;
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerView.setAdapter(listAdapter);
     }
 }
