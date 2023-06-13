@@ -45,6 +45,11 @@ public class Libro implements Serializable {
     public Libro() {
     }
 
+    public Libro(String titulo, String autor) {
+        this.lib_titulo = titulo;
+        this.autores = autor;
+    }
+
     public int getId() {
         return id;
     }
