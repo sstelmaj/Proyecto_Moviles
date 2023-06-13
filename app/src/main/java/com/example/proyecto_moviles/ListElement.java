@@ -4,14 +4,14 @@ public class ListElement {
     public String color;
     public String titulo;
     public String autor;
-    public String categoria;
+    public String fecha;
 
 
-    public ListElement(String color, String titulo, String autor, String categoria) {
+    public ListElement(String color, String titulo, String autor, String fecha) {
         this.color = color;
         this.titulo = titulo;
         this.autor = autor;
-        this.categoria = categoria;
+        this.fecha = fecha;
     }
 
     public String getColor() {
@@ -38,11 +38,11 @@ public class ListElement {
         this.autor = autor;
     }
 
-    public String getCategoria() {
-        return categoria;
+    public String getFecha() {
+        return fecha;
     }
 
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }
