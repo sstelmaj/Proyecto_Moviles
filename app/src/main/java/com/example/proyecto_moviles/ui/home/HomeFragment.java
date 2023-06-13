@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -23,6 +24,7 @@ import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -36,31 +38,19 @@ import retrofit2.Response;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-
-    //private Retrofit retrofit;
     private librosAdapter adapter;
-
-    private List<ListElement> elementos;
-
     private RecyclerView recyclerView;
-    //private Libro libroPrueba1 = new Libro();
-    //private Libro libroPrueba2 = new Libro();
 
-
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
-
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         recyclerView = binding.listRecyclerView;
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireActivity()));
 
         connectAndGetApiData();
-        //init();
 
         return root;
     }
@@ -73,34 +63,36 @@ public class HomeFragment extends Fragment {
 
     public void connectAndGetApiData() {
         Call<List<Libro>> call = librosApiAdapter.getApiService().getLibros();
-        call.enqueue(new Callback<List<Libro>>(){
+        call.enqueue(new Callback<List<Libro>>() {
             @Override
             public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
                 if (response.isSuccessful()) {
-                    List<Libro> libros=response.body();
-                    adapter = new librosAdapter(libros, R.layout.list_element, getActivity());
+                    List<Libro> libros = response.body();
+                    adapter = new librosAdapter(libros, R.layout.list_element, requireActivity());
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Libro item) {
+                            if (item != null) {
+                                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
+                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
+                                i.putExtra("libro", item);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                     recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
                 }
             }
+
             @Override
             public void onFailure(Call<List<Libro>> call, Throwable t) {
+                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    public void init(){
-        elementos = new ArrayList<>();
-        elementos.add(new ListElement("black", "Sherlock Holmes", "Artur Conan Doyle", "Misterio"));
-        elementos.add(new ListElement("black", "Harry Potter", "J.K Rowling", "Fantasia"));
-        elementos.add(new ListElement("black", "Eragorn", "Edward Kyle", "Fantasia"));
-        elementos.add(new ListElement("black", "La secta", "Camilla Läckberg", "Novela Ligera"));
-        elementos.add(new ListElement("black", "Romper el círculo", "Colleen Hoover", "Novela contemporánea"));
-        elementos.add(new ListElement("black", "Hábitos atómicos", "James Clear", "Autoayuda"));
-
-        ListAdapter listAdapter = new ListAdapter(elementos, this.getContext());
-        RecyclerView recyclerView = binding.listRecyclerView;
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        recyclerView.setAdapter(listAdapter);
     }
 }
