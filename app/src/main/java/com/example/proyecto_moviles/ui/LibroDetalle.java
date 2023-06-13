@@ -20,7 +20,7 @@ public class LibroDetalle extends AppCompatActivity {
     TextView descripcion;
 
     TextView autor;
-    TextView categoria;
+    TextView fecha;
     TextView idioma;
 
     private Context context;
@@ -40,14 +40,14 @@ public class LibroDetalle extends AppCompatActivity {
         titulo = (TextView)findViewById(R.id.detalleTitulo);
         descripcion = (TextView)findViewById(R.id.detalleDescripcion);
         autor = (TextView)findViewById(R.id.detalleAutor);
-        categoria = (TextView)findViewById(R.id.detalleCategoria);
+        fecha = (TextView)findViewById(R.id.detalleCategoria);
         idioma = (TextView)findViewById(R.id.detalleIdioma);
 
 
         titulo.setText(item.getTitulo());
         descripcion.setText(item.getDescripcion());
         autor.setText(item.getAutores());
-        //categoria.setText(getCategoria());
+        fecha.setText(item.getFechaLanzamiento());
         idioma.setText(item.getIdioma());
 
         /*

@@ -12,9 +12,9 @@ public class Libro implements Serializable {
     @SerializedName("lib_isbn")
     private String isbn;
     @SerializedName("lib_titulo")
-    private String lib_titulo;
+    private String titulo;
     @SerializedName("lib_descripcion")
-    private String lib_descripcion;
+    private String descripcion;
     @SerializedName("lib_imagen")
     private String imagen;
     @SerializedName("lib_categoria")
@@ -30,15 +30,15 @@ public class Libro implements Serializable {
     @SerializedName("lib_edicion")
     private String edicion;
     @SerializedName("lib_fecha_lanzamiento")
-    private Date fechaLanzamiento;
+    private String fechaLanzamiento;
     @SerializedName("lib_novedades")
-    private char novedades;
+    private String novedades;
     @SerializedName("lib_idioma")
     private String idioma;
     @SerializedName("lib_disponible")
-    private char disponible;
+    private String disponible;
     @SerializedName("lib_vigente")
-    private char vigente;
+    private String vigente;
     @SerializedName("lib_puntuacion")
     private Double puntuacion;
 
@@ -62,19 +62,19 @@ public class Libro implements Serializable {
     }
 
     public String getTitulo() {
-        return lib_titulo;
+        return titulo;
     }
 
     public void setTitulo(String titulo) {
-        this.lib_titulo = titulo;
+        this.titulo = titulo;
     }
 
     public String getDescripcion() {
-        return lib_descripcion;
+        return descripcion;
     }
 
     public void setDescripcion(String descripcion) {
-        this.lib_descripcion = descripcion;
+        this.descripcion = descripcion;
     }
 
     public String getImagen() {
@@ -133,19 +133,19 @@ public class Libro implements Serializable {
         this.edicion = edicion;
     }
 
-    public Date getFechaLanzamiento() {
+    public String getFechaLanzamiento() {
         return fechaLanzamiento;
     }
 
-    public void setFechaLanzamiento(Date fechaLanzamiento) {
+    public void setFechaLanzamiento(String fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
     }
 
-    public char getNovedades() {
+    public String getNovedades() {
         return novedades;
     }
 
-    public void setNovedades(char novedades) {
+    public void setNovedades(String novedades) {
         this.novedades = novedades;
     }
 
@@ -157,19 +157,19 @@ public class Libro implements Serializable {
         this.idioma = idioma;
     }
 
-    public char getDisponible() {
+    public String getDisponible() {
         return disponible;
     }
 
-    public void setDisponible(char disponible) {
+    public void setDisponible(String disponible) {
         this.disponible = disponible;
     }
 
-    public char getVigente() {
+    public String getVigente() {
         return vigente;
     }
 
-    public void setVigente(char vigente) {
+    public void setVigente(String vigente) {
         this.vigente = vigente;
     }
 
