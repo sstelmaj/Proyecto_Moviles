@@ -9,6 +9,6 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 
 public interface librosApiService {
-    @GET("libros")
+    @GET("libros/obtener-libros")
     Call<List<Libro>> getLibros();
 }
