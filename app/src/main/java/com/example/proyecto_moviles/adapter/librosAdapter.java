@@ -6,11 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import com.squareup.picasso.Picasso;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.Modelo.Libro;
@@ -42,6 +41,7 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
             librosLayout = (CardView) v.findViewById(R.id.nombre);
             libroTitle = (TextView) v.findViewById(R.id.titulo);
             data = (TextView) v.findViewById(R.id.autor);
+            libroImage=(ImageView) v.findViewById(R.id.imagen);
         }
     }
     @Override
@@ -52,15 +52,19 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
     }
     @Override
     public void onBindViewHolder(LibroViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-       // String image_url = libros.get(position).getImagen();
+        String image_url = libros.get(position).getImagen();
         //https://m.media-amazon.com/images/M/MV5BNGNhMDIzZTUtNTBlZi00MTRlLWFjM2ItYzViMjE3YzI5MjljXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg
-        /*Picasso.with(context)
+        if(image_url.isEmpty()){
+            image_url="/ruta/por/defecto/imagen.txt";
+        }
+        Picasso.get()  //with(context)
                 .load(image_url)
-                .placeholder(android.R.drawable.sym_def_app_icon)
-                .error(android.R.drawable.sym_def_app_icon)
-                .into(holder.movieImage);*/
+                .placeholder(R.drawable.menu_book_fill0_wght400_grad0_opsz48)
+                .error(R.drawable.menu_book_fill0_wght400_grad0_opsz48)
+                .into(holder.libroImage);
         holder.libroTitle.setText(libros.get(position).getTitulo());
-        holder.data.setText(libros.get(position).getDescripcion());
+        //holder.data.setText(libros.get(position).getDescripcion());
+        holder.data.setText(libros.get(position).getAutores());
 
         //enlazamos el clicklistener al item
         View.OnClickListener listener = new View.OnClickListener() {
