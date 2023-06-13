@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
     private FragmentSearchBinding binding;
 
     private List<Libro> libros;
-    private String tipoFiltro;
+    private String tipoFiltro="Todo";
 
     private librosAdapter adapter;
 
