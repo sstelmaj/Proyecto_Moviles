@@ -20,6 +20,7 @@ import com.example.proyecto_moviles.ListAdapter;
 import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
 
+import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
@@ -62,12 +63,14 @@ public class HomeFragment extends Fragment {
     }
 
     public void connectAndGetApiData() {
-        Call<List<Libro>> call = librosApiAdapter.getApiService().getLibros();
-        call.enqueue(new Callback<List<Libro>>() {
+        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+        call.enqueue(new Callback<Request>() {
             @Override
-            public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
+            public void onResponse(Call<Request> call, Response<Request> response) {
                 if (response.isSuccessful()) {
-                    List<Libro> libros = response.body();
+                    Request request = response.body();
+                    List<Libro> libros = null;
+
                     adapter = new librosAdapter(libros, R.layout.list_element, requireActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
@@ -90,7 +93,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Libro>> call, Throwable t) {
+            public void onFailure(Call<Request> call, Throwable t) {
                 Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
