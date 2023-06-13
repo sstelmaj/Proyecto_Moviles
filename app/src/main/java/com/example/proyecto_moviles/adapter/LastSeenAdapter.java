@@ -38,7 +38,7 @@ public class LastSeenAdapter extends RecyclerView.Adapter<LastSeenAdapter.LastSe
     public void onBindViewHolder(@NonNull LastSeenViewHolder holder, int position) {
         holder.bookTitle.setText(lastSeenBooks.get(position).getTitulo());
         holder.bookAuthor.setText(lastSeenBooks.get(position).getAutores());
-        Picasso.with(context)
+        Picasso.get()
                 .load(lastSeenBooks.get(position).getImagen())
                 .placeholder(android.R.drawable.sym_def_app_icon)
                 .error(android.R.drawable.sym_def_app_icon)

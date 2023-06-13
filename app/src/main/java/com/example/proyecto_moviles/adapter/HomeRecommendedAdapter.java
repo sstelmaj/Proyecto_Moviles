@@ -2,17 +2,21 @@ package com.example.proyecto_moviles.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.Modelo.Libro;
 import com.example.proyecto_moviles.R;
+import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.squareup.picasso.Picasso;
 
@@ -39,15 +43,26 @@ public class HomeRecommendedAdapter extends RecyclerView.Adapter<HomeRecommended
     public void onBindViewHolder(@NonNull HomeRecommendedViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.bookTitle.setText(recommendedBooks.get(position).getTitulo());
         holder.bookAuthor.setText(recommendedBooks.get(position).getAutores());
-        Picasso.with(context)
+        Picasso.get()
                 .load(recommendedBooks.get(position).getImagen())
                 .placeholder(android.R.drawable.sym_def_app_icon)
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.bookImage);
 
+        /*
         holder.btnDetails.setOnClickListener(
-                v -> onItemClickListener.onItemClick(recommendedBooks.get(position))
-        );
+                item -> {
+                        if (item != null) {
+                            Intent i = new Intent(context, LibroDetalle.class);
+                            Log.d("LibroDetalle", "Libro seleccionado: " + item);
+                            Log.d("LibroDetalle", "Título: " + holder.bookTitle);
+                            i.putExtra("libro", item);
+                            context.startActivity(i);
+                        } else {
+                            Toast.makeText(context, "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                        }
+                });
+        */
     }
 
     @Override

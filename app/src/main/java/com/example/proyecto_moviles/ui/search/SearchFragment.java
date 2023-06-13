@@ -3,6 +3,7 @@ package com.example.proyecto_moviles.ui.search;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
@@ -28,6 +31,8 @@ import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.ui.LibroDetalle;
+import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +130,20 @@ public class SearchFragment extends Fragment {
                 if (response.isSuccessful()) {
                     libros=response.body();
                     adapter = new librosAdapter(libros, R.layout.list_item_libro, getActivity());
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(Libro item) {
+                        if (item != null) {
+                            Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                            Log.d("LibroDetalle", "Libro seleccionado: " + item);
+                            Log.d("LibroDetalle", "Título: " + item.getTitulo());
+                            i.putExtra("libro", item);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                    });
                     recyclerView.setAdapter(adapter);
                 }
             }

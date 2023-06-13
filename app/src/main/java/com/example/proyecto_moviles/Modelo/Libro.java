@@ -46,7 +46,7 @@ public class Libro implements Serializable {
     }
 
     public Libro(String titulo, String autor) {
-        this.lib_titulo = titulo;
+        this.titulo = titulo;
         this.autores = autor;
     }
 

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.proyecto_moviles.Modelo.Libro;
 import com.example.proyecto_moviles.R;
+import com.squareup.picasso.Picasso;
 
 public class LibroDetalle extends AppCompatActivity {
 
@@ -42,6 +43,7 @@ public class LibroDetalle extends AppCompatActivity {
         autor = (TextView)findViewById(R.id.detalleAutor);
         fecha = (TextView)findViewById(R.id.detalleCategoria);
         idioma = (TextView)findViewById(R.id.detalleIdioma);
+        imagen = (ImageView)findViewById(R.id.detalleImagen);
 
 
         titulo.setText(item.getTitulo());
@@ -50,13 +52,10 @@ public class LibroDetalle extends AppCompatActivity {
         fecha.setText(item.getFechaLanzamiento());
         idioma.setText(item.getIdioma());
 
-        /*
-        Picasso.with(getApplicationContext())
-                .load(item.getPoster())
+        Picasso.get()
+                .load(item.getImagen())
                 .into(imagen);
-
-        Toast.makeText(MovieDetail.this, item.getTitle(), Toast.LENGTH_LONG).show();
-        */
+        Toast.makeText(LibroDetalle.this, item.getTitulo(), Toast.LENGTH_LONG).show();
 
     }
 }
