@@ -12,6 +12,12 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
+        android:id="@+id/nav_search"
+        android:name="com.example.proyecto_moviles.ui.search.SearchFragment"
+        android:label="@string/menu_search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
         android:id="@+id/nav_gallery"
         android:name="com.example.proyecto_moviles.ui.gallery.GalleryFragment"
         android:label="@string/menu_gallery"

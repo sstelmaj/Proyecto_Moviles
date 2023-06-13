@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -16,6 +18,8 @@ import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
 import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.ui.LibroDetalle;
+import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +44,9 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -81,17 +88,40 @@ public class HomeFragment extends Fragment {
 
     public void connectAndGetApiData() {
         Call<List<Libro>> call = librosApiAdapter.getApiService().getLibros();
-        call.enqueue(new Callback<List<Libro>>(){
+        call.enqueue(new Callback<List<Libro>>() {
             @Override
             public void onResponse(Call<List<Libro>> call, Response<List<Libro>> response) {
                 if (response.isSuccessful()) {
                     List<Libro> libros=response.body();
                     recommendedAdapter = new HomeRecommendedAdapter(libros, getActivity());
                     rv_recomendados.setAdapter(recommendedAdapter);
+/*
+                    List<Libro> libros = response.body();
+                    adapter = new librosAdapter(libros, R.layout.list_element, requireActivity());
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Libro item) {
+                            if (item != null) {
+                                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
+                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
+                                i.putExtra("libro", item);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
+*/
                 }
             }
+
             @Override
             public void onFailure(Call<List<Libro>> call, Throwable t) {
+                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
     }
