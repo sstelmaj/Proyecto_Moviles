@@ -4,43 +4,58 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Libro implements Serializable {
 
     @SerializedName("id")
     private int id;
-    @SerializedName("lib_isbn")
-    private String isbn;
-    @SerializedName("lib_titulo")
-    private String titulo;
-    @SerializedName("lib_descripcion")
-    private String descripcion;
-    @SerializedName("lib_imagen")
-    private String imagen;
-    @SerializedName("lib_categoria")
-    private int categoria;
-    @SerializedName("lib_sub_categoria")
-    private int subCategoria;
-    @SerializedName("lib_url")
-    private String url;
-    @SerializedName("lib_stock")
+    @SerializedName("stock")
     private int stock;
-    @SerializedName("lib_autores")
+    @SerializedName("isbn")
+    private String isbn;
+
+    @SerializedName("titulo")
+    private String titulo;
+    @SerializedName("imagen")
+    private String imagen;
+    @SerializedName("descripcion")
+    private String descripcion;
+    @SerializedName("autores")
     private String autores;
-    @SerializedName("lib_edicion")
+    @SerializedName("edicion")
     private String edicion;
-    @SerializedName("lib_fecha_lanzamiento")
-    private String fechaLanzamiento;
-    @SerializedName("lib_novedades")
+
+    @SerializedName("novedades")
     private String novedades;
-    @SerializedName("lib_idioma")
+    @SerializedName("fechaLanzamiento")
+    private String fechaLanzamiento;
+    @SerializedName("idioma")
     private String idioma;
-    @SerializedName("lib_disponible")
-    private String disponible;
-    @SerializedName("lib_vigente")
-    private String vigente;
-    @SerializedName("lib_puntuacion")
+    @SerializedName("puntuacion")
     private Double puntuacion;
+    @SerializedName("vigencia")
+    private String vigencia;
+    @SerializedName("categorias")
+    private List<Categoria> categorias;
+
+    /*
+    @SerializedName("lib_fecha_creado")
+    private String fecha_creado;
+
+    @SerializedName("lib_libposicion")
+    private String posicion;
+
+    @SerializedName("lib_disponible")
+
+    private char disponible;
+
+    //@SerializedName("subcategoria")
+    //private int subCategoria;
+
+    //@SerializedName("url")
+    //private String url;
+    */
 
     public Libro() {
     }
@@ -56,6 +71,14 @@ public class Libro implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 
     public String getIsbn() {
@@ -74,14 +97,6 @@ public class Libro implements Serializable {
         this.titulo = titulo;
     }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
     public String getImagen() {
         return imagen;
     }
@@ -90,36 +105,12 @@ public class Libro implements Serializable {
         this.imagen = imagen;
     }
 
-    public int getCategoria() {
-        return categoria;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setCategoria(int categoria) {
-        this.categoria = categoria;
-    }
-
-    public int getSubCategoria() {
-        return subCategoria;
-    }
-
-    public void setSubCategoria(int subCategoria) {
-        this.subCategoria = subCategoria;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public int getStock() {
-        return stock;
-    }
-
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getAutores() {
@@ -138,13 +129,6 @@ public class Libro implements Serializable {
         this.edicion = edicion;
     }
 
-    public String getFechaLanzamiento() {
-        return fechaLanzamiento;
-    }
-
-    public void setFechaLanzamiento(String fechaLanzamiento) {
-        this.fechaLanzamiento = fechaLanzamiento;
-    }
 
     public String getNovedades() {
         return novedades;
@@ -152,6 +136,14 @@ public class Libro implements Serializable {
 
     public void setNovedades(String novedades) {
         this.novedades = novedades;
+    }
+
+    public String getFechaLanzamiento() {
+        return fechaLanzamiento;
+    }
+
+    public void setFechaLanzamiento(String fechaLanzamiento) {
+        this.fechaLanzamiento = fechaLanzamiento;
     }
 
     public String getIdioma() {
@@ -162,27 +154,27 @@ public class Libro implements Serializable {
         this.idioma = idioma;
     }
 
-    public String getDisponible() {
-        return disponible;
-    }
-
-    public void setDisponible(String disponible) {
-        this.disponible = disponible;
-    }
-
-    public String getVigente() {
-        return vigente;
-    }
-
-    public void setVigente(String vigente) {
-        this.vigente = vigente;
-    }
-
     public Double getPuntuacion() {
         return puntuacion;
     }
 
     public void setPuntuacion(Double puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    public String getVigencia() {
+        return vigencia;
+    }
+
+    public void setVigencia(String vigencia) {
+        this.vigencia = vigencia;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 }
