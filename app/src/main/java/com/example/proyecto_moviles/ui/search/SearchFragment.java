@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
@@ -33,7 +34,11 @@ import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -123,12 +128,22 @@ public class SearchFragment extends Fragment {
     }
 
     public void connectAndGetApiData() {
-        Call<List<Libro>> call = librosApiAdapter.getApiService().getLibros();
-        call.enqueue(new Callback<List<Libro>>(){
+        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+        call.enqueue(new Callback<Request>(){
             @Override
-            public void onResponse(@NonNull Call<List<Libro>> call, @NonNull Response<List<Libro>> response) {
+            public void onResponse(Call<Request> call, Response<Request> response) {
                 if (response.isSuccessful()) {
-                    libros=response.body();
+                    Request request = response.body();
+                    JsonArray datos = request.getData();
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    List<Libro> libros = null;
+
+                    try {
+                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                     adapter = new librosAdapter(libros, R.layout.list_item_libro, getActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
@@ -148,7 +163,7 @@ public class SearchFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<List<Libro>> call, Throwable t) {
+            public void onFailure(Call<Request> call, Throwable t) {
             }
         });
     }

@@ -49,25 +49,18 @@ public class HomeRecommendedAdapter extends RecyclerView.Adapter<HomeRecommended
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.bookImage);
 
-        /*
         holder.btnDetails.setOnClickListener(
-                item -> {
-                        if (item != null) {
-                            Intent i = new Intent(context, LibroDetalle.class);
-                            Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                            Log.d("LibroDetalle", "Título: " + holder.bookTitle);
-                            i.putExtra("libro", item);
-                            context.startActivity(i);
-                        } else {
-                            Toast.makeText(context, "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-                        }
-                });
-        */
+                v -> onItemClickListener.onItemClick(recommendedBooks.get(position))
+        );
     }
 
     @Override
     public int getItemCount() {
         return recommendedBooks.size();
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     public static class HomeRecommendedViewHolder extends RecyclerView.ViewHolder {

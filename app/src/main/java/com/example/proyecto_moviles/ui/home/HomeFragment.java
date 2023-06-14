@@ -1,10 +1,10 @@
 package com.example.proyecto_moviles.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,11 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.Modelo.Libro;
-
-
 import com.example.proyecto_moviles.Modelo.Request;
-import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.librosAdapter;
 
 import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
 import com.example.proyecto_moviles.adapter.LastSeenAdapter;
@@ -25,10 +21,7 @@ import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.ui.LibroDetalle;
-import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -75,6 +68,15 @@ public class HomeFragment extends Fragment {
         layoutManagerRecomendados = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
         recommendedAdapter = new HomeRecommendedAdapter(librosRecomendados, this.getContext());
         rv_recomendados.setLayoutManager(layoutManagerRecomendados);
+        recommendedAdapter.setOnItemClickListener(item -> {
+            if (item != null) {
+                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                i.putExtra("libro", item);
+                startActivity(i);
+            } else {
+                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+            }
+        });
         rv_recomendados.setAdapter(recommendedAdapter);
 
         librosUltimosVistos = new ArrayList<>();
@@ -83,6 +85,15 @@ public class HomeFragment extends Fragment {
         layoutManagerUltimosVistos = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
         lastSeenAdapter = new LastSeenAdapter(librosUltimosVistos, this.getContext());
         rv_ultimos_vistos.setLayoutManager(layoutManagerUltimosVistos);
+        lastSeenAdapter.setOnItemClickListener(item -> {
+            if (item != null) {
+                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                i.putExtra("libro", item);
+                startActivity(i);
+            } else {
+                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+            }
+        });
         rv_ultimos_vistos.setAdapter(lastSeenAdapter);
 
         return root;
@@ -100,60 +111,31 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
                 if (response.isSuccessful()) {
-
                     Request request = response.body();
                     JsonArray datos = request.getData();
-
                     ObjectMapper objectMapper = new ObjectMapper();
-
                     List<Libro> libros = null;
+
                     try {
-                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() {
-                        });
+                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    System.out.println(libros.get(0).getTitulo());
-                    System.out.println(libros.get(1).getTitulo());
-                    System.out.println(libros.get(2).getTitulo());
-                    System.out.println(libros.get(3).getTitulo());
-                    System.out.println(libros.get(4).getTitulo());
-                    System.out.println(libros.get(5).getTitulo());
-                    System.out.println(libros.get(6).getTitulo());
-                    /*
-                    for (JsonElement e : datos){
-                        JsonObject dato = e.getAsJsonObject();
-                        String id = dato.get("id").getAsString();
-                        System.out.println(id);
-                        System.out.println(id);
-                        System.out.println(id);
-                        System.out.println(id);
-                    }
-                     */
 
                     recommendedAdapter = new HomeRecommendedAdapter(libros, getActivity());
-                    rv_recomendados.setAdapter(recommendedAdapter);
-/*
-                    List<Libro> libros = response.body();
-                    adapter = new librosAdapter(libros, R.layout.list_element, requireActivity());
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Libro item) {
-                            if (item != null) {
-                                Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
-                                i.putExtra("libro", item);
-                                startActivity(i);
-                            } else {
-                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-                            }
+                    recommendedAdapter.setOnItemClickListener(item -> {
+                        if (item != null) {
+                            Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                            i.putExtra("libro", item);
+                            startActivity(i);
+                        } else {
+                            Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                         }
                     });
-                    recyclerView.setAdapter(adapter);
+                    rv_recomendados.setAdapter(recommendedAdapter);
                 } else {
                     Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
-*/
+
                 }
             }
 

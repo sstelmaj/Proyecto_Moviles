@@ -54,6 +54,10 @@ public class LastSeenAdapter extends RecyclerView.Adapter<LastSeenAdapter.LastSe
         return lastSeenBooks.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     public static class LastSeenViewHolder extends RecyclerView.ViewHolder {
         TextView bookTitle;
         TextView bookAuthor;

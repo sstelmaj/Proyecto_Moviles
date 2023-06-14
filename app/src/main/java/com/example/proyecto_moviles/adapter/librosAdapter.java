@@ -67,12 +67,7 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
         holder.data.setText(libros.get(position).getAutores());
 
         //enlazamos el clicklistener al item
-        View.OnClickListener listener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onItemClickListener.onItemClick(libros.get(position));
-            }
-        };
+        View.OnClickListener listener = v -> onItemClickListener.onItemClick(libros.get(position));
         holder.libroTitle.setOnClickListener(listener);
         holder.data.setOnClickListener(listener);
     }
