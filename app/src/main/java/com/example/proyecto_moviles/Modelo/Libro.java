@@ -14,6 +14,7 @@ public class Libro implements Serializable {
     private int stock;
     @SerializedName("isbn")
     private String isbn;
+
     @SerializedName("titulo")
     private String titulo;
     @SerializedName("imagen")
@@ -24,6 +25,7 @@ public class Libro implements Serializable {
     private String autores;
     @SerializedName("edicion")
     private String edicion;
+
     @SerializedName("novedades")
     private String novedades;
     @SerializedName("fechaLanzamiento")
@@ -45,6 +47,7 @@ public class Libro implements Serializable {
     private String posicion;
 
     @SerializedName("lib_disponible")
+
     private char disponible;
 
     //@SerializedName("subcategoria")
@@ -55,6 +58,11 @@ public class Libro implements Serializable {
     */
 
     public Libro() {
+    }
+
+    public Libro(String titulo, String autor) {
+        this.titulo = titulo;
+        this.autores = autor;
     }
 
     public int getId() {
@@ -120,6 +128,7 @@ public class Libro implements Serializable {
     public void setEdicion(String edicion) {
         this.edicion = edicion;
     }
+
 
     public String getNovedades() {
         return novedades;

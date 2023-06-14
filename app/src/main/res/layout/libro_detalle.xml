@@ -12,7 +12,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,87 +20,84 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-
-        <ImageView
-            android:id="@+id/detalleImagen"
-            android:layout_width="119dp"
-            android:layout_height="143dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="72dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48" />
+            <ImageView
+                android:id="@+id/detalleImagen"
+                android:layout_width="119dp"
+                android:layout_height="143dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/detalleTitulo"
+                app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48" />
 
         <TextView
             android:id="@+id/detalleTitulo"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="167dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="167dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
             android:text="Titulo"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="24sp"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/detalleImagen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/detalleDescripcion"
+
+        <LinearLayout
+            android:id="@+id/containerDescripcion"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:layout_marginTop="44dp"
-            android:text="TextView"
-            app:layout_constraintTop_toBottomOf="@+id/detalleImagen"
-            tools:layout_editor_absoluteX="86dp" />
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/detalleImagen">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Descipcion del libro"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/detalleDescripcion"
+                android:layout_width="match_parent"
+                android:layout_marginStart="20dp"
+                android:layout_height="150dp"
+                android:text="TextView" />
+        </LinearLayout>
 
         <TableLayout
             android:layout_width="240dp"
             android:layout_height="143dp"
             android:layout_marginStart="17dp"
-            android:layout_marginTop="72dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintStart_toEndOf="@+id/detalleImagen"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/detalleTitulo">
 
             <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp">
 
                 <TextView
                     android:id="@+id/Autor"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAlignment="center"
                     android:layout_margin="5dp"
-                    android:padding="2dp"
+                    android:padding="9dp"
                     android:text="Autor"
+                    android:textStyle="bold"
                     android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/Idioma"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:layout_margin="5dp"
-                    android:padding="2dp"
-                    android:text="Idioma"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/Categoria"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:layout_margin="5dp"
-                    android:padding="2dp"
-                    android:text="Categoria"
-                    android:textColor="@color/black" />
-
-            </TableRow>
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/detalleAutor"
@@ -110,6 +107,23 @@
                     android:padding="2dp"
                     android:text="TextView" />
 
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:id="@+id/Idioma"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="9dp"
+                    android:text="Idioma"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
+
                 <TextView
                     android:id="@+id/detalleIdioma"
                     android:layout_width="wrap_content"
@@ -117,6 +131,22 @@
                     android:layout_margin="5dp"
                     android:padding="2dp"
                     android:text="TextView" />
+
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="16dp">
+                <TextView
+                    android:id="@+id/Categoria"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="9dp"
+                    android:text="Fecha"
+                    android:textStyle="bold"
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/detalleCategoria"
@@ -129,6 +159,39 @@
             </TableRow>
 
         </TableLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@id/containerDescripcion">
+
+            <TextView
+                android:id="@+id/lblComentarios"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Comentarios"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/detalle_listRecyclerView"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="1dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lblComentarios" />
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
