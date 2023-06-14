@@ -27,7 +27,13 @@ import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -69,7 +75,34 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<Request> call, Response<Request> response) {
                 if (response.isSuccessful()) {
                     Request request = response.body();
+                    JsonArray datos = request.getData();
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+
                     List<Libro> libros = null;
+                    try {
+                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() {
+                        });
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    System.out.println(libros.get(0).getTitulo());
+                    System.out.println(libros.get(1).getTitulo());
+                    System.out.println(libros.get(2).getTitulo());
+                    System.out.println(libros.get(3).getTitulo());
+                    System.out.println(libros.get(4).getTitulo());
+                    System.out.println(libros.get(5).getTitulo());
+                    System.out.println(libros.get(6).getTitulo());
+                    /*
+                    for (JsonElement e : datos){
+                        JsonObject dato = e.getAsJsonObject();
+                        String id = dato.get("id").getAsString();
+                        System.out.println(id);
+                        System.out.println(id);
+                        System.out.println(id);
+                        System.out.println(id);
+                    }
+                     */
 
                     adapter = new librosAdapter(libros, R.layout.list_element, requireActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {

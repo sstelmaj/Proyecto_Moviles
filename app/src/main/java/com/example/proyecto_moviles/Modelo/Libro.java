@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class Libro implements Serializable {
 
@@ -19,20 +20,22 @@ public class Libro implements Serializable {
     private String imagen;
     @SerializedName("descripcion")
     private String descripcion;
-    //@SerializedName("autores")
+    @SerializedName("autores")
     private String autores;
-    //@SerializedName("edicion")
+    @SerializedName("edicion")
     private String edicion;
-    //@SerializedName("novedades")
+    @SerializedName("novedades")
     private String novedades;
-    //@SerializedName("fechaLanzamiento")
+    @SerializedName("fechaLanzamiento")
     private String fechaLanzamiento;
-    //@SerializedName("idioma")
+    @SerializedName("idioma")
     private String idioma;
-    //@SerializedName("puntuacion")
+    @SerializedName("puntuacion")
     private Double puntuacion;
-    //@SerializedName("vigencia")
-    private String vigente;
+    @SerializedName("vigencia")
+    private String vigencia;
+    @SerializedName("categorias")
+    private List<Categoria> categorias;
 
     /*
     @SerializedName("lib_fecha_creado")
@@ -43,9 +46,6 @@ public class Libro implements Serializable {
 
     @SerializedName("lib_disponible")
     private char disponible;
-
-    //@SerializedName("categorias")
-    //private int categoria;
 
     //@SerializedName("subcategoria")
     //private int subCategoria;
@@ -153,11 +153,19 @@ public class Libro implements Serializable {
         this.puntuacion = puntuacion;
     }
 
-    public String getVigente() {
-        return vigente;
+    public String getVigencia() {
+        return vigencia;
     }
 
-    public void setVigente(String vigente) {
-        this.vigente = vigente;
+    public void setVigencia(String vigencia) {
+        this.vigencia = vigencia;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 }

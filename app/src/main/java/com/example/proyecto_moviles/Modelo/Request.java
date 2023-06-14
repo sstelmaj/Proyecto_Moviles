@@ -1,11 +1,14 @@
 package com.example.proyecto_moviles.Modelo;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.io.Serializable;
 
 public class Request implements Serializable {
     private int codigo;
     private String mensaje;
-    private String data;
+    private JsonArray data;
 
     public Request() {
     }
@@ -26,11 +29,11 @@ public class Request implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public String getData() {
+    public JsonArray getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(JsonArray data) {
         this.data = data;
     }
 }
