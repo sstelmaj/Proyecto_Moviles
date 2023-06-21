@@ -10,9 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -20,15 +19,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-            <ImageView
-                android:id="@+id/detalleImagen"
-                android:layout_width="119dp"
-                android:layout_height="143dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/detalleTitulo"
-                app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/detalleImagen"
+            android:layout_width="119dp"
+            android:layout_height="143dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/detalleTitulo"
+            app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48" />
 
         <TextView
             android:id="@+id/detalleTitulo"
@@ -38,10 +41,10 @@
             android:layout_marginTop="10dp"
             android:layout_marginEnd="16dp"
             android:text="Titulo"
-            android:textStyle="bold"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="24sp"
-            android:textAlignment="center"
+            android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/detalleImagen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,19 +63,19 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_marginBottom="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:text="Descipcion del libro"
-                android:textStyle="bold"
                 android:textColor="@android:color/black"
-                android:textSize="24sp" />
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/detalleDescripcion"
                 android:layout_width="match_parent"
-                android:layout_marginStart="20dp"
                 android:layout_height="150dp"
+                android:layout_marginStart="0dp"
                 android:text="TextView" />
         </LinearLayout>
 
@@ -96,8 +99,8 @@
                     android:layout_margin="5dp"
                     android:padding="9dp"
                     android:text="Autor"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detalleAutor"
@@ -121,8 +124,8 @@
                     android:layout_margin="5dp"
                     android:padding="9dp"
                     android:text="Idioma"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detalleIdioma"
@@ -138,6 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="16dp">
+
                 <TextView
                     android:id="@+id/Categoria"
                     android:layout_width="wrap_content"
@@ -145,8 +149,8 @@
                     android:layout_margin="5dp"
                     android:padding="9dp"
                     android:text="Fecha"
-                    android:textStyle="bold"
-                    android:textColor="@color/black" />
+                    android:textColor="@color/black"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/detalleCategoria"
@@ -161,8 +165,9 @@
         </TableLayout>
 
         <LinearLayout
+            android:id="@+id/containerCometarios"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintTop_toBottomOf="@id/containerDescripcion">
@@ -171,27 +176,29 @@
                 android:id="@+id/lblComentarios"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
                 android:text="Comentarios"
                 android:textColor="@android:color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/detalle_listRecyclerView"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lblComentarios" />
+
         </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/detalle_listRecyclerView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="1dp"
+            app:layout_constraintEnd_toEndOf="@id/containerCometarios"
+            app:layout_constraintStart_toStartOf="@id/containerCometarios"
+            app:layout_constraintTop_toBottomOf="@id/containerCometarios"></androidx.recyclerview.widget.RecyclerView>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
