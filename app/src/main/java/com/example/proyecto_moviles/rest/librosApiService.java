@@ -1,6 +1,7 @@
 package com.example.proyecto_moviles.rest;
 
 
+import com.example.proyecto_moviles.Modelo.Categoria;
 import com.example.proyecto_moviles.Modelo.Libro;
 import com.example.proyecto_moviles.Modelo.Request;
 
@@ -12,4 +13,7 @@ import retrofit2.http.GET;
 public interface librosApiService {
     @GET("libros/obtener-libros")
     Call<Request> getLibros();
+
+    @GET("categorias/listado")
+    Call<Request>getCategorias();
 }
