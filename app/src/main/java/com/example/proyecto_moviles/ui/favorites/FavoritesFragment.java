@@ -1,7 +1,5 @@
 package com.example.proyecto_moviles.ui.favorites;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -19,16 +17,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
+import com.example.proyecto_moviles.domain.Libro;
+import com.example.proyecto_moviles.rest.dto.Request;
 import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.librosAdapter;
+import com.example.proyecto_moviles.adapter.LibrosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
 //import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -51,7 +48,7 @@ public class FavoritesFragment extends Fragment {
     private FragmentFavoritesBinding binding;
     private RecyclerView recyclerView;
     private List<Libro> libros;
-    private librosAdapter adapter;
+    private LibrosAdapter adapter;
 
 
     public static FavoritesFragment newInstance() {
@@ -110,7 +107,7 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
     public void connectAndGetApiData() {
-        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+        Call<Request> call = LibrosApiService.getApiService().getLibros();
         call.enqueue(new Callback<Request>(){
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -126,7 +123,7 @@ public class FavoritesFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-                    adapter = new librosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
+                    adapter = new LibrosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(Libro item) {
@@ -160,7 +157,7 @@ public class FavoritesFragment extends Fragment {
                     librosFiltrados.add(l);
                 }
             }
-            adapter = new librosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
+            adapter = new LibrosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {

@@ -1,4 +1,4 @@
-package com.example.proyecto_moviles.Modelo;
+package com.example.proyecto_moviles.rest.dto;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

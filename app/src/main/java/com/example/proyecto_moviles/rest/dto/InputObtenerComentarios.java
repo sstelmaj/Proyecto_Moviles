@@ -1,9 +1,9 @@
-package com.example.proyecto_moviles.rest.dao;
+package com.example.proyecto_moviles.rest.dto;
 
-public class ObtenerComentarios {
+public class InputObtenerComentarios {
     private int lib_id;
 
-    public ObtenerComentarios(int lib_id) {
+    public InputObtenerComentarios(int lib_id) {
         this.lib_id = lib_id;
     }
 

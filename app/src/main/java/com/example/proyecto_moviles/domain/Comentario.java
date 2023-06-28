@@ -1,4 +1,4 @@
-package com.example.proyecto_moviles.Modelo;
+package com.example.proyecto_moviles.domain;
 
 import com.google.gson.annotations.SerializedName;
 

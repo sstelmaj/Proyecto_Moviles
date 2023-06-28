@@ -12,20 +12,20 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.List;
 
-public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewHolder> {
+public class LibrosAdapter extends RecyclerView.Adapter<LibrosAdapter.LibroViewHolder> {
     private List<Libro> libros;
     private int rowLayout;
     private Context context;
 
     private OnItemClickListener onItemClickListener;
 
-    public librosAdapter(List<Libro> libros, int rowLayout, Context context) {
+    public LibrosAdapter(List<Libro> libros, int rowLayout, Context context) {
         this.libros = libros;
         this.rowLayout = rowLayout;
         this.context = context;
@@ -45,7 +45,7 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
         }
     }
     @Override
-    public librosAdapter.LibroViewHolder onCreateViewHolder(ViewGroup parent,
+    public LibrosAdapter.LibroViewHolder onCreateViewHolder(ViewGroup parent,
                                                             int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
         return new LibroViewHolder(view);

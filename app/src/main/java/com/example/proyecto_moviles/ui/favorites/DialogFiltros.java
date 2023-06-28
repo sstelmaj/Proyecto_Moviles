@@ -4,37 +4,16 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.proyecto_moviles.Modelo.Categoria;
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.librosAdapter;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
-import com.example.proyecto_moviles.ui.LibroDetalle;
-import com.example.proyecto_moviles.utils.OnItemClickListener;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.gson.JsonArray;
-
-import java.io.IOException;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DialogFiltros extends DialogFragment {
     @NonNull

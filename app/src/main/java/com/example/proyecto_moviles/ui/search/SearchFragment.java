@@ -1,7 +1,5 @@
 package com.example.proyecto_moviles.ui.search;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
@@ -24,14 +21,12 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.example.proyecto_moviles.ListElement;
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
+import com.example.proyecto_moviles.domain.Libro;
+import com.example.proyecto_moviles.rest.dto.Request;
 import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.librosAdapter;
-import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
+import com.example.proyecto_moviles.adapter.LibrosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -55,7 +50,7 @@ public class SearchFragment extends Fragment {
     private List<Libro> libros;
     private String tipoFiltro="Todo";
 
-    private librosAdapter adapter;
+    private LibrosAdapter adapter;
 
     private RecyclerView recyclerView;
 
@@ -128,7 +123,7 @@ public class SearchFragment extends Fragment {
     }
 
     public void connectAndGetApiData() {
-        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+        Call<Request> call = LibrosApiService.getApiService().getLibros();
         call.enqueue(new Callback<Request>(){
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -144,7 +139,7 @@ public class SearchFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-                    adapter = new librosAdapter(libros, R.layout.list_item_libro, getActivity());
+                    adapter = new LibrosAdapter(libros, R.layout.list_item_libro, getActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(Libro item) {
@@ -188,7 +183,7 @@ public class SearchFragment extends Fragment {
                     }
                 }
             }
-            adapter = new librosAdapter(librosFiltrados, R.layout.list_item_libro, getActivity());
+            adapter = new LibrosAdapter(librosFiltrados, R.layout.list_item_libro, getActivity());
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {

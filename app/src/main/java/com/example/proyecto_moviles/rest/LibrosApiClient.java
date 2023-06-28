@@ -2,29 +2,23 @@ package com.example.proyecto_moviles.rest;
 
 
 
-import com.example.proyecto_moviles.Modelo.Categoria;
+import com.example.proyecto_moviles.domain.Comentario;
 
-import com.example.proyecto_moviles.Modelo.Comentario;
-
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
-import com.example.proyecto_moviles.rest.dao.ObtenerComentarios;
+import com.example.proyecto_moviles.rest.dto.Request;
+import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
 
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 
 import retrofit2.http.Path;
 
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 
-public interface librosApiService {
+public interface LibrosApiClient {
     @GET("libros/obtener-libros")
     Call<Request> getLibros();
 
@@ -41,7 +35,7 @@ public interface librosApiService {
 
 
     @POST("comentarios/vigentes")
-    Call<List<Comentario>> getComentarios(@Body ObtenerComentarios body);
+    Call<List<Comentario>> getComentarios(@Body InputObtenerComentarios body);
 
     /*
     @FormUrlEncoded

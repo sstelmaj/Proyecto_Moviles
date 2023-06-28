@@ -3,14 +3,13 @@ package com.example.proyecto_moviles.adapter;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.squareup.picasso.Picasso;

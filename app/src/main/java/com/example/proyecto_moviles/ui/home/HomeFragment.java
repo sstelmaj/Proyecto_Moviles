@@ -14,14 +14,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
+import com.example.proyecto_moviles.domain.Libro;
+import com.example.proyecto_moviles.rest.dto.Request;
 
 import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
 import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.google.gson.JsonArray;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
     }
 
     public void loadRecommendedBooks() {
-        Call<Request> call = librosApiAdapter.getApiService().obtenerRecomendados();
+        Call<Request> call = LibrosApiService.getApiService().obtenerRecomendados();
         call.enqueue(new Callback<Request>() {
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -117,7 +117,7 @@ public class HomeFragment extends Fragment {
     public void loadLastSeenBooks(String isbn1, String isbn2) {
         List<Libro> librosUltimosVistos = new ArrayList<>();
 
-        Call<Request> call1 = librosApiAdapter.getApiService().obtenerPorISBN(isbn1);
+        Call<Request> call1 = LibrosApiService.getApiService().obtenerPorISBN(isbn1);
         call1.enqueue(new Callback<Request>() {
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        Call<Request> call2 = librosApiAdapter.getApiService().obtenerPorISBN(isbn2);
+        Call<Request> call2 = LibrosApiService.getApiService().obtenerPorISBN(isbn2);
         call2.enqueue(new Callback<Request>() {
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {

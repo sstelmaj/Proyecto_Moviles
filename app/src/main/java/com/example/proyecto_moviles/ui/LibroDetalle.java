@@ -4,50 +4,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Comentario;
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.Request;
+import com.example.proyecto_moviles.domain.Comentario;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.comentariosAdapter;
-import com.example.proyecto_moviles.adapter.librosAdapter;
-import com.example.proyecto_moviles.rest.dao.ObtenerComentarios;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
-import com.example.proyecto_moviles.utils.OnItemClickListener;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonArray;
+import com.example.proyecto_moviles.adapter.ComentariosAdapter;
+import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
+import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-
 public class LibroDetalle extends AppCompatActivity {
 
     private SharedPreferences prefs;
 
     private List<Comentario> comentarios;
-    private comentariosAdapter adapter;
+    private ComentariosAdapter adapter;
 
     private RecyclerView recyclerView;
 
@@ -121,14 +104,14 @@ public class LibroDetalle extends AppCompatActivity {
     }
 
     public void connectAndGetApiData() {
-        ObtenerComentarios body = new ObtenerComentarios(libroId);
-        Call<List<Comentario>> call = librosApiAdapter.getApiService().getComentarios(body);
+        InputObtenerComentarios body = new InputObtenerComentarios(libroId);
+        Call<List<Comentario>> call = LibrosApiService.getApiService().getComentarios(body);
         call.enqueue(new Callback<List<Comentario>>(){
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful()) {
                     List<Comentario> comentarios = response.body();
-                    adapter = new comentariosAdapter(comentarios, R.layout.detalle_comentario, getApplicationContext());
+                    adapter = new ComentariosAdapter(comentarios, R.layout.detalle_comentario, getApplicationContext());
                     recyclerView.setAdapter(adapter);
                 }
             }

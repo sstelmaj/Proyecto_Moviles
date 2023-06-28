@@ -1,9 +1,8 @@
-package com.example.proyecto_moviles.Modelo;
+package com.example.proyecto_moviles.domain;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 public class Libro implements Serializable {
