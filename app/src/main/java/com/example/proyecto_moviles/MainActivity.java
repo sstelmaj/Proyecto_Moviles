@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 
+import com.example.proyecto_moviles.ui.favorites.FavoritesFragment;
 import com.example.proyecto_moviles.ui.home.HomeFragment;
 import com.example.proyecto_moviles.ui.search.SearchFragment;
 import com.google.android.material.snackbar.Snackbar;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new SearchFragment());
                     break;
                 case R.id.nav_favorites:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new FavoritesFragment());
                     break;
                 case R.id.nav_profile:
                     replaceFragment(new HomeFragment());

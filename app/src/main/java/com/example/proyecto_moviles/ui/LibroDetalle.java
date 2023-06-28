@@ -96,11 +96,12 @@ public class LibroDetalle extends AppCompatActivity {
         Picasso.get()
                 .load(item.getImagen())
                 .into(imagen);
-        Toast.makeText(LibroDetalle.this, item.getTitulo(), Toast.LENGTH_LONG).show();
+        //Toast.makeText(LibroDetalle.this, item.getTitulo(), Toast.LENGTH_LONG).show();
 
         connectAndGetApiData();
-        saveBookToLastSeen(item.getTitulo());
+        //saveBookToLastSeen(item.getTitulo());
     }
+
 
     private void saveBookToLastSeen(String bookISBN) {
         prefs = getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
