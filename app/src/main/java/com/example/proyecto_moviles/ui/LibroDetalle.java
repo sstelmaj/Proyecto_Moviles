@@ -93,32 +93,13 @@ public class LibroDetalle extends AppCompatActivity {
     }
 
     public void connectAndGetApiData() {
-        Call<List<Comentario>> call = librosApiAdapter.getApiService2(libroId).getComentarios();
+        Call<List<Comentario>> call = librosApiAdapter.getApiService().getComentarios(libroId);
         call.enqueue(new Callback<List<Comentario>>(){
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful()) {
 
                     List<Comentario> comentarios = response.body();
-
-                    System.out.println(comentarios.get(0).getComentario());
-                    System.out.println(comentarios.get(1).getComentario());
-                    System.out.println(comentarios.get(2).getComentario());
-                    System.out.println(comentarios.get(3).getComentario());
-                    System.out.println(comentarios.get(4).getComentario());
-                    System.out.println(comentarios.get(5).getComentario());
-                    System.out.println(comentarios.get(0).getComentario());
-                    System.out.println(comentarios.get(1).getComentario());
-                    System.out.println(comentarios.get(2).getComentario());
-                    System.out.println(comentarios.get(3).getComentario());
-                    System.out.println(comentarios.get(4).getComentario());
-                    System.out.println(comentarios.get(5).getComentario());
-                    System.out.println(comentarios.get(0).getComentario());
-                    System.out.println(comentarios.get(1).getComentario());
-                    System.out.println(comentarios.get(2).getComentario());
-                    System.out.println(comentarios.get(3).getComentario());
-                    System.out.println(comentarios.get(4).getComentario());
-                    System.out.println(comentarios.get(5).getComentario());
 
                     /*
                     Request request = response.body();
