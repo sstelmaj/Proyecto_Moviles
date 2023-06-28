@@ -19,6 +19,7 @@ import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.comentariosAdapter;
 import com.example.proyecto_moviles.adapter.librosAdapter;
+import com.example.proyecto_moviles.rest.dao.ObtenerComentarios;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -93,52 +94,17 @@ public class LibroDetalle extends AppCompatActivity {
     }
 
     public void connectAndGetApiData() {
-        Call<List<Comentario>> call = librosApiAdapter.getApiService().getComentarios(libroId);
+        ObtenerComentarios body = new ObtenerComentarios(libroId);
+        Call<List<Comentario>> call = librosApiAdapter.getApiService().getComentarios(body);
         call.enqueue(new Callback<List<Comentario>>(){
             @Override
             public void onResponse(Call<List<Comentario>> call, Response<List<Comentario>> response) {
                 if (response.isSuccessful()) {
-
                     List<Comentario> comentarios = response.body();
-
-                    /*
-                    Request request = response.body();
-                    JsonArray datos = request.getData();
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    List<Comentario> comentarios = null;
-
-                    request.getData().
-
-                    try {
-                        comentarios = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    */
-
                     adapter = new comentariosAdapter(comentarios, R.layout.detalle_comentario, getApplicationContext());
-
-                    /*
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Comentario item) {
-                            if (item != null) {
-                                Intent i = new Intent(context, LibroDetalle.class);
-                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
-                                i.putExtra("libro", item);
-                                startActivity(i);
-                            } else {
-                                Toast.makeText(context, "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                    */
-
                     recyclerView.setAdapter(adapter);
                 }
             }
-
             @Override
             public void onFailure(Call<List<Comentario>> call, Throwable t) {
             }

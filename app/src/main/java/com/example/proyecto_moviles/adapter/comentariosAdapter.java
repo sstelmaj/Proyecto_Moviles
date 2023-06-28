@@ -68,7 +68,7 @@ public class comentariosAdapter extends RecyclerView.Adapter<comentariosAdapter.
 
         holder.comentario.setText(comentarios.get(position).getComentario());
         //holder.data.setText(libros.get(position).getDescripcion());
-        holder.autor.setText(String.valueOf(comentarios.get(position).getUsu_id()));
+        holder.autor.setText(String.valueOf(comentarios.get(position).getNombreUsuario()));
 
         /*
         //enlazamos el clicklistener al item

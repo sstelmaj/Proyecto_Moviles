@@ -27,8 +27,29 @@ public class Comentario {
     @SerializedName("comet_vigente")
     private String vigente;
 
+    @SerializedName("usu_nombre")
+    private String nombreUsuario;
+
+    @SerializedName("usu_documento")
+    private String documentoUsuario;
 
     public Comentario() {
+    }
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public void setNombreUsuario(String nombreUsuario) {
+        this.nombreUsuario = nombreUsuario;
+    }
+
+    public String getDocumentoUsuario() {
+        return documentoUsuario;
+    }
+
+    public void setDocumentoUsuario(String documentoUsuario) {
+        this.documentoUsuario = documentoUsuario;
     }
 
     public int getId() {
