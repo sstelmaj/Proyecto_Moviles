@@ -1,6 +1,8 @@
 package com.example.proyecto_moviles.ui.home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.google.gson.JsonArray;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,12 +37,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
-
+    private SharedPreferences prefs;
     private FragmentHomeBinding binding;
     private HomeRecommendedAdapter recommendedAdapter;
     private LastSeenAdapter lastSeenAdapter;
-    private List<Libro> librosRecomendados;
-    private List<Libro> librosUltimosVistos;
     private RecyclerView rv_recomendados;
     private RecyclerView rv_ultimos_vistos;
     private LinearLayoutManager layoutManagerRecomendados;
@@ -53,49 +54,6 @@ public class HomeFragment extends Fragment {
 
         rv_recomendados = binding.horizontalRecommended;
         rv_ultimos_vistos = binding.ultimosVistosList;
-
-//        connectAndGetApiData();
-        librosRecomendados = new ArrayList<>();
-        librosRecomendados.add(new Libro("Sherlock Holmes", "Artur Conan Doyle"));
-        librosRecomendados.add(new Libro("Harry Potter", "J.K Rowling"));
-        librosRecomendados.add(new Libro("Eragorn", "Edward Kyle"));
-        librosRecomendados.add(new Libro("La secta", "Camilla Läckberg"));
-        librosRecomendados.add(new Libro("Sherlock Holmes 2", "Artur Conan Doyle"));
-        librosRecomendados.add(new Libro("Harry Potter 2", "J.K Rowling"));
-        librosRecomendados.add(new Libro("Eragorn 2", "Edward Kyle"));
-        librosRecomendados.add(new Libro("La secta 2", "Camilla Läckberg"));
-
-        layoutManagerRecomendados = new LinearLayoutManager(this.getContext(), LinearLayoutManager.HORIZONTAL, false);
-        recommendedAdapter = new HomeRecommendedAdapter(librosRecomendados, this.getContext());
-        rv_recomendados.setLayoutManager(layoutManagerRecomendados);
-        recommendedAdapter.setOnItemClickListener(item -> {
-            if (item != null) {
-                Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                i.putExtra("libro", item);
-                startActivity(i);
-            } else {
-                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-            }
-        });
-        rv_recomendados.setAdapter(recommendedAdapter);
-
-        librosUltimosVistos = new ArrayList<>();
-        librosUltimosVistos.add(new Libro("Viaje al centro de la tierra", "Julio Verne"));
-        librosUltimosVistos.add(new Libro("Memoria del fuego", "Eduardo Galeano"));
-        layoutManagerUltimosVistos = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
-        lastSeenAdapter = new LastSeenAdapter(librosUltimosVistos, this.getContext());
-        rv_ultimos_vistos.setLayoutManager(layoutManagerUltimosVistos);
-        lastSeenAdapter.setOnItemClickListener(item -> {
-            if (item != null) {
-                Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                i.putExtra("libro", item);
-                startActivity(i);
-            } else {
-                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-            }
-        });
-        rv_ultimos_vistos.setAdapter(lastSeenAdapter);
-
         return root;
     }
 
@@ -105,8 +63,17 @@ public class HomeFragment extends Fragment {
         binding = null;
     }
 
-    public void connectAndGetApiData() {
-        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+    @Override
+    public void onResume() {
+        super.onResume();
+        prefs = requireActivity().getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
+        String ultimosVistos1 = prefs.getString("ultimosVistos1", null);
+        String ultimosVistos2 = prefs.getString("ultimosVistos2", null);
+        loadLastSeenBooks(ultimosVistos1, ultimosVistos2);
+    }
+
+    public void loadRecommendedBooks() {
+        Call<Request> call = librosApiAdapter.getApiService().obtenerRecomendados();
         call.enqueue(new Callback<Request>() {
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -122,7 +89,9 @@ public class HomeFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
+                    layoutManagerRecomendados = new LinearLayoutManager(HomeFragment.this.getContext(), LinearLayoutManager.HORIZONTAL, false);
                     recommendedAdapter = new HomeRecommendedAdapter(libros, getActivity());
+                    rv_recomendados.setLayoutManager(layoutManagerRecomendados);
                     recommendedAdapter.setOnItemClickListener(item -> {
                         if (item != null) {
                             Intent i = new Intent(requireActivity(), LibroDetalle.class);
@@ -135,7 +104,6 @@ public class HomeFragment extends Fragment {
                     rv_recomendados.setAdapter(recommendedAdapter);
                 } else {
                     Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
-
                 }
             }
 
@@ -144,5 +112,74 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void loadLastSeenBooks(String isbn1, String isbn2) {
+        List<Libro> librosUltimosVistos = new ArrayList<>();
+
+        Call<Request> call1 = librosApiAdapter.getApiService().obtenerPorISBN(isbn1);
+        call1.enqueue(new Callback<Request>() {
+            @Override
+            public void onResponse(Call<Request> call, Response<Request> response) {
+                if (response.isSuccessful()) {
+                    Request request = response.body();
+                    JsonObject datos = request.getData().getAsJsonObject();
+                    ObjectMapper objectMapper = new ObjectMapper();
+
+                    try {
+                        Libro libro = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
+                        librosUltimosVistos.add(libro);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    Toast.makeText(requireActivity(), "Error al obtener el ultimo libro visto", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Request> call, Throwable t) {
+                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        Call<Request> call2 = librosApiAdapter.getApiService().obtenerPorISBN(isbn2);
+        call2.enqueue(new Callback<Request>() {
+            @Override
+            public void onResponse(Call<Request> call, Response<Request> response) {
+                if (response.isSuccessful()) {
+                    Request request = response.body();
+                    JsonObject datos = request.getData().getAsJsonObject();
+                    ObjectMapper objectMapper = new ObjectMapper();
+
+                    try {
+                        Libro libro = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
+                        librosUltimosVistos.add(libro);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    Toast.makeText(requireActivity(), "Error al obtener el anteultimo libro visto", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Request> call, Throwable t) {
+                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        layoutManagerUltimosVistos = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
+        lastSeenAdapter = new LastSeenAdapter(librosUltimosVistos, this.getContext());
+        rv_ultimos_vistos.setLayoutManager(layoutManagerUltimosVistos);
+        lastSeenAdapter.setOnItemClickListener(item -> {
+            if (item != null) {
+                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                i.putExtra("libro", item);
+                startActivity(i);
+            } else {
+                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+            }
+        });
+        rv_ultimos_vistos.setAdapter(lastSeenAdapter);
     }
 }

@@ -5,7 +5,9 @@
     android:layout_height="wrap_content"
     android:animateLayoutChanges="true"
     app:cardCornerRadius="5dp"
-    app:cardUseCompatPadding="true">
+    app:cardUseCompatPadding="true"
+    android:id="@+id/card_view"
+    >
 
     <RelativeLayout
         android:layout_width="250dp"
@@ -16,14 +18,14 @@
             android:id="@+id/book_image"
             android:layout_width="match_parent"
             android:layout_height="150dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:layout_centerHorizontal="true"
             android:src="@mipmap/ic_launcher"
             />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="80dp"
             android:layout_below="@+id/book_image"
             android:orientation="vertical"
             android:layout_alignParentStart="true"
@@ -48,13 +50,13 @@
                 android:textColor="@color/gray"
                 android:textSize="12sp" />
 
-            <Button
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:id="@+id/btn_ver_detalle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ver detalle"
-                android:textSize="10sp"/>
+<!--            <Button-->
+<!--                style="@style/Widget.MaterialComponents.Button.OutlinedButton"-->
+<!--                android:id="@+id/btn_ver_detalle"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Ver detalle"-->
+<!--                android:textSize="10sp"/>-->
         </LinearLayout>
 
 
