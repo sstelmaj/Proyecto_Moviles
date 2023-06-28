@@ -1,8 +1,7 @@
-package com.example.proyecto_moviles.ui.search;
+package com.example.proyecto_moviles.ui.favorites;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
@@ -19,18 +17,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.proyecto_moviles.ListElement;
 import com.example.proyecto_moviles.Modelo.Libro;
 import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.librosAdapter;
-import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
-import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
+import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
+//import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
@@ -40,44 +37,56 @@ import com.google.gson.JsonArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SearchFragment extends Fragment {
+public class FavoritesFragment extends Fragment {
 
-    private SearchViewModel mViewModel;
+    private FavoritesViewModel mViewModel;
 
-    private FragmentSearchBinding binding;
-
+    private FragmentFavoritesBinding binding;
+    private RecyclerView recyclerView;
     private List<Libro> libros;
-    private String tipoFiltro="Todo";
-
     private librosAdapter adapter;
 
-    private RecyclerView recyclerView;
 
-    public static SearchFragment newInstance() {
-        return new SearchFragment();
+    public static FavoritesFragment newInstance() {
+        return new FavoritesFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentSearchBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
+        binding= FragmentFavoritesBinding.inflate(inflater,container,false);
+        View root= binding.getRoot();
+        Button btnOrdenar=binding.btnOrdenar;
+        Button btnFiltros=binding.btnFiltrar;
         EditText buscador=binding.etBuscador;
         GridLayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2);
 
-        recyclerView = binding.RecyclerViewSearch;
+        recyclerView = binding.RecyclerViewFavoritos;
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        connectAndGetApiData();
-        //init();
+        btnOrdenar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                libros.sort((Comparator.comparing(Libro::getTitulo)));
+                filtradoDeLibros(buscador.getText().toString());
+            }
+        });
+
+        btnFiltros.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showFilterDialog();
+            }
+        });
+
         buscador.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -95,38 +104,11 @@ public class SearchFragment extends Fragment {
                 filtradoDeLibros(filtro);
             }
         });
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this.getActivity()));
 
-        RadioGroup buttonGroup = binding.buttonGroup;
-        buttonGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                // Deseleccionar los demás botones
-                for (int i = 0; i < radioGroup.getChildCount(); i++) {
-                    RadioButton radioButton = (RadioButton) radioGroup.getChildAt(i);
-                    radioButton.setChecked(radioButton.getId() == checkedId);
-                }
-
-                // Aplicar acciones según el botón seleccionado
-                switch (checkedId) {
-                    case R.id.buttonTodo:
-                        tipoFiltro="Todo";
-                        break;
-                    case R.id.buttonTitulo:
-                        tipoFiltro="Titulo";
-                        break;
-                    case R.id.buttonAutor:
-                        tipoFiltro="Autor";
-                        break;
-                    case R.id.buttonMateria:
-                        tipoFiltro="Materia";
-                        break;
-                }
-            }
-        });
+        connectAndGetApiData();
         return root;
     }
-
     public void connectAndGetApiData() {
         Call<Request> call = librosApiAdapter.getApiService().getLibros();
         call.enqueue(new Callback<Request>(){
@@ -144,20 +126,21 @@ public class SearchFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
 
-                    adapter = new librosAdapter(libros, R.layout.list_item_libro, getActivity());
+                    adapter = new librosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(Libro item) {
-                        if (item != null) {
-                            Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                            Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                            Log.d("LibroDetalle", "Título: " + item.getTitulo());
-                            i.putExtra("libro", item);
-                            startActivity(i);
-                        } else {
-                            Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onItemClick(Libro item) {
+                            if (item != null) {
+                                Intent i = new Intent(requireActivity(), LibroDetalle.class);
+                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
+                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
+                                i.putExtra("libro", item);
+                                startActivity(i);
+                            } else {
+                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
+
                     });
                     recyclerView.setAdapter(adapter);
                 }
@@ -171,24 +154,13 @@ public class SearchFragment extends Fragment {
     public void filtradoDeLibros(String filtro) {
         //if (!filtro.equals("")) {
         List<Libro> librosFiltrados = new ArrayList<>();
-        if (libros!=null) {
-            for (Libro l : libros) {
-                if (tipoFiltro.equals("Todo")) {
-                    if (l.getTitulo().contains(filtro) || l.getAutores().contains(filtro)) {
-                        librosFiltrados.add(l);
-                    }
-                    ;
-                } else if (tipoFiltro.equals("Titulo")) {
-                    if (l.getTitulo().contains(filtro)) {
-                        librosFiltrados.add(l);
-                    }
-                } else {
-                    if (l.getAutores().contains(filtro)) {
-                        librosFiltrados.add(l);
-                    }
+        if(libros!=null){
+            for(Libro l: libros) {
+                if (l.getTitulo().contains(filtro)) {
+                    librosFiltrados.add(l);
                 }
             }
-            adapter = new librosAdapter(librosFiltrados, R.layout.list_item_libro, getActivity());
+            adapter = new librosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {
@@ -208,6 +180,9 @@ public class SearchFragment extends Fragment {
             connectAndGetApiData();
         }
     }
-    //}
 
+    public void showFilterDialog() {
+        DialogFiltros filterDialog = new DialogFiltros();
+        filterDialog.show(this.getChildFragmentManager(), "filtros_dialog");
+    }
 }

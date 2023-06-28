@@ -1,7 +1,11 @@
 package com.example.proyecto_moviles.rest;
 
 
+
+import com.example.proyecto_moviles.Modelo.Categoria;
+
 import com.example.proyecto_moviles.Modelo.Comentario;
+
 import com.example.proyecto_moviles.Modelo.Libro;
 import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.rest.dao.ObtenerComentarios;
@@ -21,15 +25,17 @@ public interface librosApiService {
     Call<Request> getLibros();
 
 
+    @GET("categorias/listado")
+    Call<Request>getCategorias();
+
+
     @POST("comentarios/vigentes")
     Call<List<Comentario>> getComentarios(@Body ObtenerComentarios body);
-
 
     /*
     @FormUrlEncoded
     @POST("comentarios/vigentes")
     Call<List<Comentario>> getComentarios(@Field("lib_id") int lib_id);
     */
-
 
 }
