@@ -18,7 +18,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/detalle_contenido"
                 android:layout_width="match_parent"
-                android:layout_height="586dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="0dp">
@@ -228,7 +228,7 @@
                 android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="@id/detalle_contenido"
                 app:layout_constraintStart_toStartOf="@id/detalle_contenido"
-                app:layout_constraintTop_toBottomOf="@id/containerCometarios"></androidx.recyclerview.widget.RecyclerView>
+                app:layout_constraintTop_toBottomOf="@id/detalle_contenido"></androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
     </ScrollView>

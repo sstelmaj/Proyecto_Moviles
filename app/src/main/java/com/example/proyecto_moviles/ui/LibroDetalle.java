@@ -82,7 +82,7 @@ public class LibroDetalle extends AppCompatActivity {
         //Toast.makeText(LibroDetalle.this, item.getTitulo(), Toast.LENGTH_LONG).show();
 
         connectAndGetApiData();
-        //saveBookToLastSeen(item.getTitulo());
+        saveBookToLastSeen(item.getIsbn());
     }
 
 
@@ -91,9 +91,12 @@ public class LibroDetalle extends AppCompatActivity {
         String ultimosVistos1 = prefs.getString("ultimosVistos1", null);
 
         SharedPreferences.Editor editor = prefs.edit();
-        if (bookISBN != null && !ultimosVistos1.equals(bookISBN)) {
-            if (ultimosVistos1 == null) {
-                editor.putString("ultimosVistos1", bookISBN);
+        if(ultimosVistos1 == null) {
+            editor.putString("ultimosVistos1", bookISBN);
+        } else {
+            String ultimosVistos2 = prefs.getString("ultimosVistos2", null);
+            if (ultimosVistos2 == null) {
+                editor.putString("ultimosVistos2", bookISBN);
             } else {
                 editor.putString("ultimosVistos2", ultimosVistos1);
                 editor.putString("ultimosVistos1", bookISBN);

@@ -13,17 +13,16 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 
-import retrofit2.http.Path;
-
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 
 public interface LibrosApiClient {
     @GET("libros/obtener-libros")
     Call<Request> getLibros();
 
-    @GET("libros/obtener-libro/{isbn}")
-    Call<Request> obtenerPorISBN(@Path("isbn") String isbn);
+    @GET("libros/obtener-libro")
+    Call<Request> obtenerPorISBN(@Query("isbn") String isbn);
 
     @GET("libros/obtener-libros")
     Call<Request> obtenerRecomendados();
