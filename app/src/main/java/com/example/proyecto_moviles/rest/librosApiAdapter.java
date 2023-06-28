@@ -33,4 +33,26 @@ public class librosApiAdapter {
 
         return API_SERVICE;
     }
+
+    public static librosApiService getApiService2(int id) {
+        // Creamos un interceptor y le indicamos el log level a usar
+        final HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        // Asociamos el interceptor a las peticiones
+        final OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(logging);
+
+        if (API_SERVICE == null) {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(BASE_URL+id)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .client(httpClient.build()) // <-- set log level
+                    .build();
+
+            API_SERVICE = retrofit.create(librosApiService.class);
+        }
+
+        return API_SERVICE;
+    }
 }
