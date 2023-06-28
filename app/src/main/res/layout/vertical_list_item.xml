@@ -22,13 +22,9 @@
                 android:id="@+id/imagen"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true"
-                android:foregroundGravity="center"
-                android:paddingLeft="14dp"
-                android:paddingRight="14dp"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48"
-                android:layout_alignParentLeft="true">
+                android:layout_centerHorizontal="true">
             </ImageView>
         </LinearLayout>
 

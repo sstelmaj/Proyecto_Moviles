@@ -2,6 +2,7 @@ package com.example.proyecto_moviles.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -34,13 +35,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 public class LibroDetalle extends AppCompatActivity {
+
+    private SharedPreferences prefs;
 
     private List<Comentario> comentarios;
     private comentariosAdapter adapter;
 
     private RecyclerView recyclerView;
-
 
     Libro item;
     TextView titulo;
@@ -66,7 +75,6 @@ public class LibroDetalle extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         Intent i = getIntent();
-
         item = (Libro)i.getSerializableExtra("libro");
 
         titulo = (TextView)findViewById(R.id.detalleTitulo);
@@ -91,6 +99,24 @@ public class LibroDetalle extends AppCompatActivity {
         Toast.makeText(LibroDetalle.this, item.getTitulo(), Toast.LENGTH_LONG).show();
 
         connectAndGetApiData();
+        saveBookToLastSeen(item.getTitulo());
+    }
+
+    private void saveBookToLastSeen(String bookISBN) {
+        prefs = getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
+        String ultimosVistos1 = prefs.getString("ultimosVistos1", null);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        if (bookISBN != null && !ultimosVistos1.equals(bookISBN)) {
+            if (ultimosVistos1 == null) {
+                editor.putString("ultimosVistos1", bookISBN);
+            } else {
+                editor.putString("ultimosVistos2", ultimosVistos1);
+                editor.putString("ultimosVistos1", bookISBN);
+            }
+        }
+
+        editor.apply();
     }
 
     public void connectAndGetApiData() {

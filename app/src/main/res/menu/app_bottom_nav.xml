@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:id="@+id/nav_home"
+        android:icon="@drawable/outline_home_24"/>
+    <item
+        android:title="Reservados"
+        android:id="@+id/nav_bookmark"
+        android:icon="@drawable/outline_bookmark_border_24"/>
+    <item
+        android:title="Buscar"
+        android:id="@+id/nav_search"
+        android:icon="@drawable/outline_search_24" />
+    <item
+        android:title="Favoritos"
+        android:id="@+id/nav_favorites"
+        android:icon="@drawable/outline_favorites_24"/>
+    <item
+        android:title="Perfil"
+        android:id="@+id/nav_profile"
+        android:icon="@drawable/outline_account_circle_24"/>
+</menu>

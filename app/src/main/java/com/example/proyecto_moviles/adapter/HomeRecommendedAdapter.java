@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.proyecto_moviles.Modelo.Libro;
@@ -45,7 +46,11 @@ public class HomeRecommendedAdapter extends RecyclerView.Adapter<HomeRecommended
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.bookImage);
 
-        holder.btnDetails.setOnClickListener(
+//        holder.btnDetails.setOnClickListener(
+//                v -> onItemClickListener.onItemClick(recommendedBooks.get(position))
+//        );
+
+        holder.card.setOnClickListener(
                 v -> onItemClickListener.onItemClick(recommendedBooks.get(position))
         );
     }
@@ -64,13 +69,15 @@ public class HomeRecommendedAdapter extends RecyclerView.Adapter<HomeRecommended
         TextView bookAuthor;
         ImageView bookImage;
         Button btnDetails;
+        CardView card;
 
         public HomeRecommendedViewHolder(@NonNull View itemView) {
             super(itemView);
             bookTitle = itemView.findViewById(R.id.book_title);
             bookAuthor = itemView.findViewById(R.id.book_author);
             bookImage = itemView.findViewById(R.id.book_image);
-            btnDetails = itemView.findViewById(R.id.btn_ver_detalle);
+//            btnDetails = itemView.findViewById(R.id.btn_ver_detalle);
+            card = itemView.findViewById(R.id.card_view);
         }
     }
 }
