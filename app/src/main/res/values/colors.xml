@@ -14,5 +14,8 @@
     <color name="colorPrimaryDark">#006FFD</color>
     <color name="colorSecondary">#F8F9FE</color>
     <color name="imageBackground">#EAF2FF</color>
+    <color name="colorError">#FF0000</color>
+    <color name="colorSuccess">#00FF00</color>
+    <color name="inputBase">#006FFD</color>
 
 </resources>

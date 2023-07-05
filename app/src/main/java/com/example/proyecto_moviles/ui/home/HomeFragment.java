@@ -10,10 +10,15 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.proyecto_moviles.MainActivity;
+import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.rest.dto.Request;
 
@@ -23,6 +28,7 @@ import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.ui.LibroDetalle;
+import com.example.proyecto_moviles.ui.suggestion.SuggestionFragment;
 import com.google.gson.JsonArray;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,6 +57,19 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        // change the title in the toolbar
+        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
+        toolbar.setTitle("BibliUtec");
+        binding.fabAddSuggestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout_content_main, new SuggestionFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
         rv_recomendados = binding.horizontalRecommended;
         rv_ultimos_vistos = binding.ultimosVistosList;
         loadRecommendedBooks();
@@ -69,9 +88,6 @@ public class HomeFragment extends Fragment {
         prefs = requireActivity().getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
         String ultimosVistos1 = prefs.getString("ultimosVistos1", null);
         String ultimosVistos2 = prefs.getString("ultimosVistos2", null);
-
-        System.out.println("ULTIMOS VISTOS 1: " + ultimosVistos1);
-        System.out.println("ULTIMOS VISTOS 2: " + ultimosVistos2);
         loadLastSeenBooks(ultimosVistos1, ultimosVistos2);
     }
 
