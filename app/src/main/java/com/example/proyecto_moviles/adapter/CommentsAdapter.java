@@ -17,14 +17,14 @@ import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.List;
 
-public class ComentariosAdapter extends RecyclerView.Adapter<ComentariosAdapter.ComentarioViewHolder>{
+public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ComentarioViewHolder>{
     private List<Comentario> comentarios;
     private int rowLayout;
     private Context context;
 
     private OnItemClickListener onItemClickListener;
 
-    public ComentariosAdapter(List<Comentario> comentarios, int rowLayout, Context context) {
+    public CommentsAdapter(List<Comentario> comentarios, int rowLayout, Context context) {
         this.comentarios = comentarios;
         this.rowLayout = rowLayout;
         this.context = context;
@@ -44,13 +44,13 @@ public class ComentariosAdapter extends RecyclerView.Adapter<ComentariosAdapter.
         }
     }
     @Override
-    public ComentariosAdapter.ComentarioViewHolder onCreateViewHolder(ViewGroup parent,
-                                                                      int viewType) {
+    public CommentsAdapter.ComentarioViewHolder onCreateViewHolder(ViewGroup parent,
+                                                                   int viewType) {
         View view = LayoutInflater.from(parent.getContext()). inflate(rowLayout, parent, false);
-        return new ComentariosAdapter.ComentarioViewHolder(view);
+        return new CommentsAdapter.ComentarioViewHolder(view);
     }
     @Override
-    public void onBindViewHolder(ComentariosAdapter.ComentarioViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+    public void onBindViewHolder(CommentsAdapter.ComentarioViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.comentario.setText(comentarios.get(position).getComentario());
         //holder.data.setText(libros.get(position).getDescripcion());
         holder.autor.setText(String.valueOf(comentarios.get(position).getNombreUsuario()));

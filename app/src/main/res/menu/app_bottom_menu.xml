@@ -6,7 +6,7 @@
         android:icon="@drawable/outline_home_24"/>
     <item
         android:title="Reservados"
-        android:id="@+id/nav_bookmark"
+        android:id="@+id/nav_reservations"
         android:icon="@drawable/outline_bookmark_border_24"/>
     <item
         android:title="Buscar"

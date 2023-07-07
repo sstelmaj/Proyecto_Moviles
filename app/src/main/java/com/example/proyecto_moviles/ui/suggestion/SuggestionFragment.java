@@ -1,51 +1,29 @@
 package com.example.proyecto_moviles.ui.suggestion;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.proyecto_moviles.MainActivity;
-import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
-import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.databinding.FragmentSuggestionBinding;
-import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.InputSugerencia;
 import com.example.proyecto_moviles.rest.dto.Request;
-import com.example.proyecto_moviles.ui.LibroDetalle;
-import com.example.proyecto_moviles.ui.home.HomeFragment;
 import com.example.proyecto_moviles.utils.TextValidator;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.textfield.TextInputLayout;
-import com.google.gson.JsonArray;
-
-import java.io.IOException;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class SuggestionFragment extends Fragment {
-
     private SharedPreferences prefs;
     private FragmentSuggestionBinding binding;
     private boolean isValidForm = false;
@@ -55,10 +33,6 @@ public class SuggestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentSuggestionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-        // change the title in the toolbar
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("BibliUtec - Agregar Sugerencia");
 
         binding.txtName.getEditText().addTextChangedListener(new TextValidator(binding.txtName.getEditText()) {
             @Override
