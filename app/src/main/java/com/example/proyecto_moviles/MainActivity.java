@@ -1,30 +1,29 @@
 package com.example.proyecto_moviles;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.Menu;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import com.example.proyecto_moviles.databinding.ActivityMainBinding;
 
 import com.example.proyecto_moviles.ui.favorites.FavoritesFragment;
 import com.example.proyecto_moviles.ui.home.HomeFragment;
+import com.example.proyecto_moviles.ui.profile.ProfileFragment;
 import com.example.proyecto_moviles.ui.search.SearchFragment;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.proyecto_moviles.databinding.ActivityMainBinding;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private SharedPreferences prefs;
     private ActivityMainBinding binding;
 
     @Override
@@ -34,15 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
 
-        setSupportActionBar(binding.appBarMain.toolbar);
-
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         binding.appBarMain.bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()) {
@@ -59,12 +51,21 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(new FavoritesFragment());
                     break;
                 case R.id.nav_profile:
-                    replaceFragment(new HomeFragment());
+                    replaceFragment(new ProfileFragment());
                     break;
             }
             return true;
         });
 
+        setUser();
+    }
+
+    private void setUser() {
+        prefs = getSharedPreferences("MisPreferencias.UsuarioLogueado", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("usuarioId", "22");
+        editor.putString("token", "Bearer 64a4ca6c5cd97");
+        editor.apply();
     }
 
     private void replaceFragment(Fragment fragment) {
@@ -72,5 +73,22 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout_content_main, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if ( v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int)event.getRawX(), (int)event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent( event );
     }
 }
