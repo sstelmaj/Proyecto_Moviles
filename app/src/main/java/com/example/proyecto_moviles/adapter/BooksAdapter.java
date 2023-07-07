@@ -18,14 +18,14 @@ import com.example.proyecto_moviles.utils.OnItemClickListener;
 
 import java.util.List;
 
-public class LibrosAdapter extends RecyclerView.Adapter<LibrosAdapter.LibroViewHolder> {
+public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.LibroViewHolder> {
     private List<Libro> libros;
     private int rowLayout;
     private Context context;
 
     private OnItemClickListener onItemClickListener;
 
-    public LibrosAdapter(List<Libro> libros, int rowLayout, Context context) {
+    public BooksAdapter(List<Libro> libros, int rowLayout, Context context) {
         this.libros = libros;
         this.rowLayout = rowLayout;
         this.context = context;
@@ -45,8 +45,8 @@ public class LibrosAdapter extends RecyclerView.Adapter<LibrosAdapter.LibroViewH
         }
     }
     @Override
-    public LibrosAdapter.LibroViewHolder onCreateViewHolder(ViewGroup parent,
-                                                            int viewType) {
+    public BooksAdapter.LibroViewHolder onCreateViewHolder(ViewGroup parent,
+                                                           int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
         return new LibroViewHolder(view);
     }

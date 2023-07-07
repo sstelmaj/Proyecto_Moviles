@@ -8,56 +8,110 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+
 import com.example.proyecto_moviles.databinding.ActivityMainBinding;
 
-import com.example.proyecto_moviles.ui.favorites.FavoritesFragment;
-import com.example.proyecto_moviles.ui.home.HomeFragment;
-import com.example.proyecto_moviles.ui.profile.ProfileFragment;
-import com.example.proyecto_moviles.ui.search.SearchFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 
 public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private ActivityMainBinding binding;
+    AppBarConfiguration appBarConfiguration;
+    NavOptions slideToRight;
+    NavOptions slideToLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        replaceFragment(new HomeFragment());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        NavController navController = Navigation.findNavController(this, R.id.mainNavHost);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        binding.appBarMain.bottomNavigationView.setOnItemSelectedListener(item -> {
+        appBarConfiguration = new AppBarConfiguration.Builder(
+                R.id.nav_home, R.id.nav_reservations, R.id.nav_search, R.id.nav_favorites, R.id.nav_profile)
+                .build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        slideToRight = new NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setEnterAnim(R.anim.enter_from_right)
+                .setExitAnim(R.anim.exit_to_left)
+                .build();
+
+        slideToLeft = new NavOptions.Builder()
+                .setLaunchSingleTop(true)
+                .setEnterAnim(R.anim.enter_from_left)
+                .setExitAnim(R.anim.exit_to_right)
+                .build();
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int currentDestination = navController.getCurrentDestination().getId();
+            if (currentDestination == R.id.fragment_suggestion) {
+                navController.navigateUp();
+            }
+
+            NavOptions animationToUse = determineAnimationToUse(currentDestination, item.getItemId());
+
             switch (item.getItemId()) {
                 case R.id.nav_home:
-                    replaceFragment(new HomeFragment());
+                    navController.navigate(R.id.nav_home, null, animationToUse);
                     break;
-                case R.id.nav_bookmark:
-                    replaceFragment(new HomeFragment());
+                case R.id.nav_reservations:
+                    navController.navigate(R.id.nav_reservations, null, animationToUse);
                     break;
                 case R.id.nav_search:
-                    replaceFragment(new SearchFragment());
+                    navController.navigate(R.id.nav_search, null, animationToUse);
                     break;
                 case R.id.nav_favorites:
-                    replaceFragment(new FavoritesFragment());
+                    navController.navigate(R.id.nav_favorites, null, animationToUse);
                     break;
                 case R.id.nav_profile:
-                    replaceFragment(new ProfileFragment());
+                    navController.navigate(R.id.nav_profile, null, animationToUse);
                     break;
             }
+
             return true;
         });
+        bottomNavigationView.setOnItemReselectedListener(item -> {});
 
         setUser();
+    }
+
+    private NavOptions determineAnimationToUse(int current, int destination) {
+        // create 2 dictionaries for each direction and asign them with a value
+        // if the destination is greater than the current, then use slideToRight
+        // else use slideToLeft
+
+        int[] directions = {R.id.nav_home, R.id.nav_reservations, R.id.nav_search, R.id.nav_favorites, R.id.nav_profile};
+        int[] values = {0, 1, 2, 3, 4};
+        int currentDirection = 0;
+        int destinationDirection = 0;
+
+        for (int i = 0; i < directions.length; i++) {
+            if (directions[i] == current) {
+                currentDirection = values[i];
+            }
+            if (directions[i] == destination) {
+                destinationDirection = values[i];
+            }
+        }
+
+        if (destinationDirection > currentDirection) {
+            return slideToRight;
+        } else {
+            return slideToLeft;
+        }
     }
 
     private void setUser() {
@@ -66,13 +120,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("usuarioId", "22");
         editor.putString("token", "Bearer 64a4ca6c5cd97");
         editor.apply();
-    }
-
-    private void replaceFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout_content_main, fragment);
-        fragmentTransaction.commit();
     }
 
     @Override
@@ -90,5 +137,12 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.dispatchTouchEvent( event );
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.mainNavHost);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }

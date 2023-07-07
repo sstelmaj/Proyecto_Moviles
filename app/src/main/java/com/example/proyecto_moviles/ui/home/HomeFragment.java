@@ -1,37 +1,30 @@
 package com.example.proyecto_moviles.ui.home;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.MainActivity;
 import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.domain.Libro;
-import com.example.proyecto_moviles.rest.dto.Request;
-
 import com.example.proyecto_moviles.adapter.HomeRecommendedAdapter;
 import com.example.proyecto_moviles.adapter.LastSeenAdapter;
-
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.rest.LibrosApiService;
-import com.example.proyecto_moviles.ui.LibroDetalle;
-import com.example.proyecto_moviles.ui.suggestion.SuggestionFragment;
-import com.google.gson.JsonArray;
+import com.example.proyecto_moviles.rest.dto.Request;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonArray;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,16 +50,10 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        // change the title in the toolbar
-        Toolbar toolbar = getActivity().findViewById(R.id.toolbar);
-        toolbar.setTitle("BibliUtec");
         binding.fabAddSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout_content_main, new SuggestionFragment());
-                fragmentTransaction.commit();
+                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_add_suggestion);
             }
         });
 
@@ -114,9 +101,7 @@ public class HomeFragment extends Fragment {
                     rv_recomendados.setLayoutManager(layoutManagerRecomendados);
                     recommendedAdapter.setOnItemClickListener(item -> {
                         if (item != null) {
-                            Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                            i.putExtra("libro", item);
-                            startActivity(i);
+                            navigateToBookDetail(item);
                         } else {
                             Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                         }
@@ -156,6 +141,7 @@ public class HomeFragment extends Fragment {
                     for (Libro libro : libros) {
                         if (libro.getIsbn().equals(isbn1) || libro.getIsbn().equals(isbn2)) {
                             librosUltimosVistos.add(libro);
+                            librosUltimosVistos.sort((o1, o2) -> o1.getIsbn().equals(isbn1) ? -1 : 1);
                         }
                     }
 
@@ -164,9 +150,7 @@ public class HomeFragment extends Fragment {
                     rv_ultimos_vistos.setLayoutManager(layoutManagerUltimosVistos);
                     lastSeenAdapter.setOnItemClickListener(item -> {
                         if (item != null) {
-                            Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                            i.putExtra("libro", item);
-                            startActivity(i);
+                            navigateToBookDetail(item);
                         } else {
                             Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                         }
@@ -183,5 +167,11 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void navigateToBookDetail(Libro libro) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("libro", libro);
+        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_nav_home_to_book_detail, bundle);
     }
 }
