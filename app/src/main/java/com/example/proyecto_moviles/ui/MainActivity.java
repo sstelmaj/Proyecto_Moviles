@@ -1,4 +1,4 @@
-package com.example.proyecto_moviles;
+package com.example.proyecto_moviles.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,14 +9,17 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.databinding.ActivityMainBinding;
-
+import com.example.proyecto_moviles.domain.Usuario;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.NavController;
 import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -25,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences prefs;
     private ActivityMainBinding binding;
     AppBarConfiguration appBarConfiguration;
+    NavController navController;
+
+    Usuario loggedUser;
     NavOptions slideToRight;
     NavOptions slideToLeft;
 
@@ -34,12 +40,32 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NavController navController = Navigation.findNavController(this, R.id.mainNavHost);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+//        clearPrefs();
+
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.mainNavHost);
+        navController = navHostFragment.getNavController();
+
+        BottomNavigationView bottomNavigationView = binding.mainBottomNav;
         NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
+        Toolbar toolbar = findViewById(R.id.mainToolbar);
+        setSupportActionBar(toolbar);
+
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if(destination.getId() == R.id.login) {
+                bottomNavigationView.setVisibility(View.GONE);
+                toolbar.setVisibility(View.GONE);
+            } else if (destination.getId() == R.id.menu_add_suggestion){
+                bottomNavigationView.setVisibility(View.GONE);
+            } else {
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.VISIBLE);
+            }
+        });
+
         appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_reservations, R.id.nav_search, R.id.nav_favorites, R.id.nav_profile)
+                R.id.menu_home, R.id.menu_reservations, R.id.menu_search, R.id.menu_favorites, R.id.menu_profile)
+                .setFallbackOnNavigateUpListener(this::onSupportNavigateUp)
                 .build();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
 
@@ -57,35 +83,32 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int currentDestination = navController.getCurrentDestination().getId();
-            if (currentDestination == R.id.fragment_suggestion) {
-                navController.navigateUp();
+            if(currentDestination == R.layout.fragment_suggestion) {
+                navController.navigate(R.id.menu_home, null, slideToLeft);
             }
-
             NavOptions animationToUse = determineAnimationToUse(currentDestination, item.getItemId());
 
             switch (item.getItemId()) {
-                case R.id.nav_home:
-                    navController.navigate(R.id.nav_home, null, animationToUse);
+                case R.id.menu_home:
+                    navController.navigate(R.id.menu_home, null, animationToUse);
                     break;
-                case R.id.nav_reservations:
-                    navController.navigate(R.id.nav_reservations, null, animationToUse);
+                case R.id.menu_reservations:
+                    navController.navigate(R.id.menu_reservations, null, animationToUse);
                     break;
-                case R.id.nav_search:
-                    navController.navigate(R.id.nav_search, null, animationToUse);
+                case R.id.menu_search:
+                    navController.navigate(R.id.menu_search, null, animationToUse);
                     break;
-                case R.id.nav_favorites:
-                    navController.navigate(R.id.nav_favorites, null, animationToUse);
+                case R.id.menu_favorites:
+                    navController.navigate(R.id.menu_favorites, null, animationToUse);
                     break;
-                case R.id.nav_profile:
-                    navController.navigate(R.id.nav_profile, null, animationToUse);
+                case R.id.menu_profile:
+                    navController.navigate(R.id.menu_profile, null, animationToUse);
                     break;
             }
 
             return true;
         });
         bottomNavigationView.setOnItemReselectedListener(item -> {});
-
-        setUser();
     }
 
     private NavOptions determineAnimationToUse(int current, int destination) {
@@ -93,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         // if the destination is greater than the current, then use slideToRight
         // else use slideToLeft
 
-        int[] directions = {R.id.nav_home, R.id.nav_reservations, R.id.nav_search, R.id.nav_favorites, R.id.nav_profile};
+        int[] directions = {R.id.menu_home, R.id.menu_reservations, R.id.menu_search, R.id.menu_favorites, R.id.menu_profile};
         int[] values = {0, 1, 2, 3, 4};
         int currentDirection = 0;
         int destinationDirection = 0;
@@ -114,14 +137,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void setUser() {
-        prefs = getSharedPreferences("MisPreferencias.UsuarioLogueado", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("usuarioId", "22");
-        editor.putString("token", "Bearer 64a4ca6c5cd97");
-        editor.apply();
-    }
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -139,10 +154,16 @@ public class MainActivity extends AppCompatActivity {
         return super.dispatchTouchEvent( event );
     }
 
-    @Override
     public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.mainNavHost);
+        // Show bottom navigation bar when navigating up
+//        findViewById(R.id.mainBottomNav).setVisibility(View.VISIBLE);
+
         return NavigationUI.navigateUp(navController, appBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    private void clearPrefs() {
+        prefs = getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        prefs.edit().clear().apply();
     }
 }
