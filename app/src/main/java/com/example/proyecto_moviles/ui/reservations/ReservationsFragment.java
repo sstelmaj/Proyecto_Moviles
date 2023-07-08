@@ -11,18 +11,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.proyecto_moviles.databinding.FragmentProfileBinding;
+import com.example.proyecto_moviles.databinding.FragmentReservationsBinding;
 
 public class ReservationsFragment extends Fragment {
 
-    private FragmentProfileBinding binding;
+    private FragmentReservationsBinding binding;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentProfileBinding.inflate(inflater, container, false);
+        binding = FragmentReservationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         return root;
     }
 
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+    }
 }
