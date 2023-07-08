@@ -20,11 +20,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.domain.Libro;
-import com.example.proyecto_moviles.rest.dto.Request;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.BooksAdapter;
-import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -115,12 +115,12 @@ public class SearchFragment extends Fragment {
     }
 
     public void connectAndGetApiData() {
-        Call<Request> call = LibrosApiService.getApiService().getLibros();
-        call.enqueue(new Callback<Request>(){
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().getLibros();
+        call.enqueue(new Callback<RequestWithDataArray>(){
             @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                 if (response.isSuccessful()) {
-                    Request request = response.body();
+                    RequestWithDataArray request = response.body();
                     JsonArray datos = request.getData();
                     ObjectMapper objectMapper = new ObjectMapper();
                     //List<Libro> libros = null;
@@ -146,7 +146,7 @@ public class SearchFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<Request> call, Throwable t) {
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
             }
         });
     }
@@ -191,7 +191,7 @@ public class SearchFragment extends Fragment {
     private void navigateToDetail(Libro item) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("libro", item);
-        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_nav_search_to_book_details, bundle);
+        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_menu_search_to_menu_book_details, bundle);
     }
 
 }

@@ -5,12 +5,12 @@ import com.google.gson.JsonObject;
 
 import java.io.Serializable;
 
-public class Request implements Serializable {
+public class RequestWithDataObject implements Serializable {
     private int codigo;
     private String mensaje;
-    private JsonArray data;
+    private JsonObject data;
 
-    public Request() {
+    public RequestWithDataObject() {
     }
 
     public int getCodigo() {
@@ -29,11 +29,11 @@ public class Request implements Serializable {
         this.mensaje = mensaje;
     }
 
-    public JsonArray getData() {
+    public JsonObject getData() {
         return data;
     }
 
-    public void setData(JsonArray data) {
+    public void setData(JsonObject data) {
         this.data = data;
     }
 }

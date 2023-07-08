@@ -18,11 +18,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
 import com.example.proyecto_moviles.domain.Libro;
-import com.example.proyecto_moviles.rest.dto.Request;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.BooksAdapter;
-import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
 //import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
@@ -99,12 +99,12 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
     public void connectAndGetApiData() {
-        Call<Request> call = LibrosApiService.getApiService().getLibros();
-        call.enqueue(new Callback<Request>(){
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().getLibros();
+        call.enqueue(new Callback<RequestWithDataArray>(){
             @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                 if (response.isSuccessful()) {
-                    Request request = response.body();
+                    RequestWithDataArray request = response.body();
                     JsonArray datos = request.getData();
                     ObjectMapper objectMapper = new ObjectMapper();
                     //List<Libro> libros = null;
@@ -131,7 +131,7 @@ public class FavoritesFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<Request> call, Throwable t) {
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
             }
         });
     }
@@ -170,6 +170,6 @@ public class FavoritesFragment extends Fragment {
     private void navigateToDetail(Libro item) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("libro", item);
-        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_nav_favorites_to_book_details, bundle);
+        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_menu_favorites_to_menu_book_details, bundle);
     }
 }

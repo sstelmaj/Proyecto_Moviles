@@ -3,15 +3,21 @@ package com.example.proyecto_moviles.ui.home;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.SavedStateHandle;
+import androidx.navigation.NavBackStackEntry;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +27,9 @@ import com.example.proyecto_moviles.adapter.LastSeenAdapter;
 import com.example.proyecto_moviles.databinding.FragmentHomeBinding;
 import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.rest.LibrosApiService;
-import com.example.proyecto_moviles.rest.dto.Request;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
+import com.example.proyecto_moviles.ui.login.LoginFragment;
+import com.example.proyecto_moviles.ui.MainActivity;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
@@ -35,7 +43,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
-    private SharedPreferences prefs;
+    private SharedPreferences lastSeenPreferences;
+    private SharedPreferences loginPreferences;
+    private SharedPreferences usuarioLogueadoPreferences;
     private FragmentHomeBinding binding;
     private HomeRecommendedAdapter recommendedAdapter;
     private LastSeenAdapter lastSeenAdapter;
@@ -44,23 +54,57 @@ public class HomeFragment extends Fragment {
     private LinearLayoutManager layoutManagerRecomendados;
     private LinearLayoutManager layoutManagerUltimosVistos;
 
+    private NavController navController;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        NavController navController = NavHostFragment.findNavController(this);
+
+        NavBackStackEntry navBackStackEntry = navController.getCurrentBackStackEntry();
+        SavedStateHandle savedStateHandle = navBackStackEntry.getSavedStateHandle();
+        savedStateHandle.getLiveData(LoginFragment.LOGIN_SUCCESSFUL)
+                .observe(navBackStackEntry, (Observer<? super Object>) result -> {
+                    Boolean success = (Boolean) result;
+                    if (!success) {
+                        ((MainActivity) requireActivity()).getSupportActionBar().show();
+                        int startDestination = navController.getGraph().getStartDestination();
+                        NavOptions navOptions = new NavOptions.Builder()
+                                .setPopUpTo(startDestination, true)
+                                .build();
+                        navController.navigate(startDestination, null, navOptions);
+                    }
+                });
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+        lastSeenPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
+        loginPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        usuarioLogueadoPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        navController = Navigation.findNavController(view);
+
+        checkIfLogged();
 
         binding.fabAddSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_nav_home_to_add_suggestion);
+                navController.navigate(R.id.action_menu_home_to_menu_add_suggestion);
             }
         });
 
         rv_recomendados = binding.horizontalRecommended;
         rv_ultimos_vistos = binding.ultimosVistosList;
         loadRecommendedBooks();
-        return root;
     }
 
     @Override
@@ -72,19 +116,18 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        prefs = requireActivity().getSharedPreferences("MisPreferencias.UltimosVistos", Context.MODE_PRIVATE);
-        String ultimosVistos1 = prefs.getString("ultimosVistos1", null);
-        String ultimosVistos2 = prefs.getString("ultimosVistos2", null);
+        String ultimosVistos1 = lastSeenPreferences.getString("ultimosVistos1", null);
+        String ultimosVistos2 = lastSeenPreferences.getString("ultimosVistos2", null);
         loadLastSeenBooks(ultimosVistos1, ultimosVistos2);
     }
 
     public void loadRecommendedBooks() {
-        Call<Request> call = LibrosApiService.getApiService().obtenerRecomendados();
-        call.enqueue(new Callback<Request>() {
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().obtenerRecomendados();
+        call.enqueue(new Callback<RequestWithDataArray>() {
             @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                 if (response.isSuccessful()) {
-                    Request request = response.body();
+                    RequestWithDataArray request = response.body();
                     JsonArray datos = request.getData();
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<Libro> libros = null;
@@ -103,30 +146,30 @@ public class HomeFragment extends Fragment {
                         if (item != null) {
                             navigateToBookDetail(item);
                         } else {
-                            Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(((MainActivity) requireActivity()), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                         }
                     });
                     rv_recomendados.setAdapter(recommendedAdapter);
                 } else {
-                    Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((MainActivity) requireActivity()), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Request> call, Throwable t) {
-                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+                Toast.makeText(((MainActivity) requireActivity()), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void loadLastSeenBooks(String isbn1, String isbn2) {
 
-        Call<Request> call = LibrosApiService.getApiService().getLibros();
-        call.enqueue(new Callback<Request>() {
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().getLibros();
+        call.enqueue(new Callback<RequestWithDataArray>() {
             @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                 if (response.isSuccessful()) {
-                    Request request = response.body();
+                    RequestWithDataArray request = response.body();
                     JsonArray datos = request.getData();
                     ObjectMapper objectMapper = new ObjectMapper();
                     List<Libro> libros;
@@ -152,19 +195,19 @@ public class HomeFragment extends Fragment {
                         if (item != null) {
                             navigateToBookDetail(item);
                         } else {
-                            Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(((MainActivity) requireActivity()), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                         }
                     });
                     rv_ultimos_vistos.setAdapter(lastSeenAdapter);
 
                 } else {
-                    Toast.makeText(requireActivity(), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(((MainActivity) requireActivity()), "Error en la respuesta de la API", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Request> call, Throwable t) {
-                Toast.makeText(requireActivity(), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+                Toast.makeText(((MainActivity) requireActivity()), "Error en la llamada a la API", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -172,6 +215,13 @@ public class HomeFragment extends Fragment {
     public void navigateToBookDetail(Libro libro) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("libro", libro);
-        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_nav_home_to_book_detail, bundle);
+        navController.navigate(R.id.action_menu_favorites_to_menu_book_details, bundle);
+    }
+
+    private void checkIfLogged() {
+        String userId = usuarioLogueadoPreferences.getString("token", null);
+        if (userId == null) {
+            navController.navigate(R.id.login);
+        }
     }
 }

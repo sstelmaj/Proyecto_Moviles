@@ -17,7 +17,11 @@
 
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/inter_regular</item>
-    </style>
+
+        <!-- Remove Action Bar. -->
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>    </style>
 
     <style name="Theme.Proyecto_Moviles.NoActionBar">
         <item name="windowActionBar">false</item>
