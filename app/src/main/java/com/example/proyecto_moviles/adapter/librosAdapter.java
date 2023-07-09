@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.example.proyecto_moviles.utils.OnImageClickListener;
 import com.squareup.picasso.Picasso;
 import android.widget.TextView;
 
@@ -24,6 +26,7 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
     private Context context;
 
     private OnItemClickListener onItemClickListener;
+    private OnImageClickListener onImageClickListener;
 
     public librosAdapter(List<Libro> libros, int rowLayout, Context context) {
         this.libros = libros;
@@ -76,12 +79,12 @@ public class librosAdapter extends RecyclerView.Adapter<librosAdapter.LibroViewH
         return libros.size();
     }
 
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
     //Declaramos el get y set para el clicklistener
     public OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
-    }
-
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
     }
 }

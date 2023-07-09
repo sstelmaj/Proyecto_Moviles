@@ -23,13 +23,16 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.Modelo.LibroFavorito;
 import com.example.proyecto_moviles.Modelo.Request;
 import com.example.proyecto_moviles.R;
+import com.example.proyecto_moviles.adapter.favoritosAdapter;
 import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
 //import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 import com.example.proyecto_moviles.rest.librosApiAdapter;
 import com.example.proyecto_moviles.ui.LibroDetalle;
+import com.example.proyecto_moviles.utils.OnImageClickListener;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,8 +53,8 @@ public class FavoritesFragment extends Fragment {
 
     private FragmentFavoritesBinding binding;
     private RecyclerView recyclerView;
-    private List<Libro> libros;
-    private librosAdapter adapter;
+    private List<LibroFavorito> libros;
+    private favoritosAdapter adapter;
 
 
     public static FavoritesFragment newInstance() {
@@ -75,7 +78,7 @@ public class FavoritesFragment extends Fragment {
         btnOrdenar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                libros.sort((Comparator.comparing(Libro::getTitulo)));
+                libros.sort((Comparator.comparing(LibroFavorito::getTitulo)));
                 filtradoDeLibros(buscador.getText().toString());
             }
         });
@@ -110,7 +113,7 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
     public void connectAndGetApiData() {
-        Call<Request> call = librosApiAdapter.getApiService().getLibros();
+        Call<Request> call = librosApiAdapter.getApiService().obtenerFavoritos("Bearer 64aa1393ba4ed");
         call.enqueue(new Callback<Request>(){
             @Override
             public void onResponse(Call<Request> call, Response<Request> response) {
@@ -121,27 +124,11 @@ public class FavoritesFragment extends Fragment {
                     //List<Libro> libros = null;
 
                     try {
-                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<Libro>>() { });
+                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<LibroFavorito>>() { });
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
-                    adapter = new librosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Libro item) {
-                            if (item != null) {
-                                Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                                Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                                Log.d("LibroDetalle", "Título: " + item.getTitulo());
-                                i.putExtra("libro", item);
-                                startActivity(i);
-                            } else {
-                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                    });
+                    adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
                     recyclerView.setAdapter(adapter);
                 }
             }
@@ -153,14 +140,14 @@ public class FavoritesFragment extends Fragment {
 
     public void filtradoDeLibros(String filtro) {
         //if (!filtro.equals("")) {
-        List<Libro> librosFiltrados = new ArrayList<>();
+        List<LibroFavorito> librosFiltrados = new ArrayList<>();
         if(libros!=null){
-            for(Libro l: libros) {
+            for(LibroFavorito l: libros) {
                 if (l.getTitulo().contains(filtro)) {
                     librosFiltrados.add(l);
                 }
             }
-            adapter = new librosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
+            adapter = new favoritosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {
@@ -184,5 +171,21 @@ public class FavoritesFragment extends Fragment {
     public void showFilterDialog() {
         DialogFiltros filterDialog = new DialogFiltros();
         filterDialog.show(this.getChildFragmentManager(), "filtros_dialog");
+    }
+
+    public void eliminarFavorito(int id){
+        libros.remove(libros.get(id));
+       // Call<Request> call = librosApiAdapter.getApiService().eliminarFavorito("64a4ba06d07e9",id);
+        /*call.enqueue(new Callback<Request>(){
+            @Override
+            public void onResponse(Call<Request> call, Response<Request> response) {
+                adapter.changeEstadoFavorito();
+            }
+
+            @Override
+            public void onFailure(Call<Request> call, Throwable t) {
+
+            }
+        });*/
     }
 }
