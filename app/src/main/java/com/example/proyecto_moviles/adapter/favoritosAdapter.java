@@ -63,6 +63,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
             favImage=(ImageView) v.findViewById(R.id.favorito);
             this.imagenCorazonVacio = imagenCorazonVacio;
             this.imagenCorazonRelleno = imagenCorazonRelleno;
+            this.favorito=true;
         }
     }
     @Override
@@ -136,7 +137,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
     }
 
     public void cambiarEstadoFavorito(boolean estado, int position) {
-        if (estado) {
+        if (!estado) {
             Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer 64ab4d9388dda", libros.get(position).getFav_id());
             call.enqueue(new Callback<RequestWithDataArray>() {
                 @Override
