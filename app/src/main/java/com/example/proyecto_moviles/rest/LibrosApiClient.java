@@ -4,6 +4,7 @@ package com.example.proyecto_moviles.rest;
 
 import com.example.proyecto_moviles.domain.Comentario;
 
+import com.example.proyecto_moviles.rest.dto.InputPostComentario;
 import com.example.proyecto_moviles.rest.dto.InputSugerencia;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
 import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
@@ -18,6 +19,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
@@ -45,6 +47,8 @@ public interface LibrosApiClient {
     @POST("/sugerencias")
     Call<RequestWithDataArray> sendSuggestion(@Header("Authorization") String token, @Body InputSugerencia body);
 
+    @POST("/comentarios")
+    Call<RequestWithDataArray> postComentario(@Header("Authorization") String token, @Body InputPostComentario body);
     /*
     @FormUrlEncoded
     @POST("comentarios/vigentes")
