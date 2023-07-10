@@ -12,8 +12,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.CommentsAdapter;
@@ -22,9 +24,16 @@ import com.example.proyecto_moviles.domain.Comentario;
 import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
+import com.example.proyecto_moviles.rest.dto.InputPostComentario;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
+import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +55,10 @@ public class BookDetailFragment extends Fragment {
     private TextView autor;
     private TextView fecha;
     private TextView idioma;
+
+    private ImageButton enviarComentario;
+    private TextInputEditText inputComentario;
+    private String comentario;
 
 
     @Override
@@ -84,6 +97,9 @@ public class BookDetailFragment extends Fragment {
         idioma = binding.detalleIdioma;
         idioma.setText(libro.getIdioma());
 
+        enviarComentario = binding.detalleEnviarComentario;
+        inputComentario = binding.detalleInputComentario;
+
         imagen = binding.detalleImagen;
         Picasso.get()
                 .load(libro.getImagen())
@@ -91,6 +107,20 @@ public class BookDetailFragment extends Fragment {
 
         connectAndGetApiData();
         saveBookToLastSeen(libro.getIsbn());
+
+        enviarComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comentario = inputComentario.getText().toString();
+                if (comentario.equals("")){
+                    inputComentario.setError("Escribe un comentario !");
+                } else {
+                    postearComentario(comentario);
+                    inputComentario.setText("");
+                    inputComentario.clearFocus();
+                }
+            }
+        });
 
         return root;
     }
@@ -127,4 +157,37 @@ public class BookDetailFragment extends Fragment {
             }
         });
     }
+
+    public void postearComentario(String comentario) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat.setTimeZone(TimeZone.getTimeZone("America/Montevideo"));
+        String date = dateFormat.format(new Date());
+
+        SharedPreferences userPrefs = requireActivity().getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        String usuarioIdString = userPrefs.getString("id", null);
+        int usuarioId = Integer.parseInt(usuarioIdString);
+
+        InputPostComentario inputPostComentario = new InputPostComentario(date, comentario, usuarioId, libro.getId());
+
+        String token = "Bearer " + userPrefs.getString("token", null);
+
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().postComentario(token, inputPostComentario);
+        call.enqueue(new Callback<RequestWithDataArray>() {
+            @Override
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Comentario publicado !", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(requireActivity(), "Ha ocurrido un error, vuelva a intentar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+                Toast.makeText(requireActivity(), "Ha ocurrido un error de servidor, intentelo más tarde", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
 }
