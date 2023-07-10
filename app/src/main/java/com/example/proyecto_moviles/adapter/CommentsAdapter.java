@@ -30,11 +30,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.Coment
         this.context = context;
     }
 
-    public void agregarComentario(Comentario comentario) {
-        comentarios.add(comentario);
-        notifyItemInserted(comentarios.size() - 1);
-    }
-
     public static class ComentarioViewHolder extends RecyclerView.ViewHolder {
         CardView comentariosLayout;
         TextView comentario;
