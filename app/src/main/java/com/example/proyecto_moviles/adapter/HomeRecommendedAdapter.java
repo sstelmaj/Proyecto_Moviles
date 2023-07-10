@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.squareup.picasso.Picasso;

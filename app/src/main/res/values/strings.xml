@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">BibliUtec</string>
-    <string name="nav_header_title">BibliUtec</string>
 
-    <string name="menu_home">Home</string>
-    <string name="menu_gallery">Gallery</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_search">Search</string>
-    <string name="menu_favorites">Favoritos</string>
-    <string name="LibroDetalle">Detalle del Libro</string>
-  
+    <string name="fragment_home">@string/app_name</string>
+    <string name="fragment_reservations">Reservas</string>
+    <string name="fragment_search">Buscar</string>
+    <string name="fragment_favorites">Favoritos</string>
+    <string name="fragment_profile">Mi Perfil</string>
+    <string name="fragment_suggestion">Añadir Sugerencia</string>
+    <string name="fragment_details">Detalle de Libro</string>
+
+    <string name="fragment_login">Iniciar Sesión</string>
+    <string name="fragment_menu">Menu</string>
+
 </resources>

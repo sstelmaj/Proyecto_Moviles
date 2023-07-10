@@ -1,38 +1,32 @@
 package com.example.proyecto_moviles.ui.favorites;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.example.proyecto_moviles.Modelo.Libro;
-import com.example.proyecto_moviles.Modelo.LibroFavorito;
-import com.example.proyecto_moviles.Modelo.Request;
-import com.example.proyecto_moviles.R;
-import com.example.proyecto_moviles.adapter.favoritosAdapter;
-import com.example.proyecto_moviles.adapter.librosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
+import com.example.proyecto_moviles.domain.Libro;
+import com.example.proyecto_moviles.domain.LibroFavorito;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
+import com.example.proyecto_moviles.R;
+import com.example.proyecto_moviles.adapter.BooksAdapter;
+import com.example.proyecto_moviles.adapter.favoritosAdapter;
 //import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
-import com.example.proyecto_moviles.ui.LibroDetalle;
-import com.example.proyecto_moviles.utils.OnImageClickListener;
+//import com.example.proyecto_moviles.ui.LibroDetalle;
+import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,17 +43,11 @@ import retrofit2.Response;
 
 public class FavoritesFragment extends Fragment {
 
-    private FavoritesViewModel mViewModel;
-
     private FragmentFavoritesBinding binding;
     private RecyclerView recyclerView;
     private List<LibroFavorito> libros;
     private favoritosAdapter adapter;
 
-
-    public static FavoritesFragment newInstance() {
-        return new FavoritesFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -113,12 +101,12 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
     public void connectAndGetApiData() {
-        Call<Request> call = librosApiAdapter.getApiService().obtenerFavoritos("Bearer 64aa1393ba4ed");
-        call.enqueue(new Callback<Request>(){
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().obtenerFavoritos("Bearer 64ab4d9388dda");
+        call.enqueue(new Callback<RequestWithDataArray>(){
             @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                 if (response.isSuccessful()) {
-                    Request request = response.body();
+                    RequestWithDataArray request = response.body();
                     JsonArray datos = request.getData();
                     ObjectMapper objectMapper = new ObjectMapper();
                     //List<Libro> libros = null;
@@ -129,11 +117,24 @@ public class FavoritesFragment extends Fragment {
                         throw new RuntimeException(e);
                     }
                     adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
+
+                    //adapter = new BooksAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
+                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                        @Override
+                        public void onItemClick(Libro item) {
+                            if (item != null) {
+                               navigateToDetail(item);
+                            } else {
+                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                    });
                     recyclerView.setAdapter(adapter);
                 }
             }
             @Override
-            public void onFailure(Call<Request> call, Throwable t) {
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
             }
         });
     }
@@ -147,16 +148,13 @@ public class FavoritesFragment extends Fragment {
                     librosFiltrados.add(l);
                 }
             }
+
             adapter = new favoritosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {
                     if (item != null) {
-                        Intent i = new Intent(requireActivity(), LibroDetalle.class);
-                        Log.d("LibroDetalle", "Libro seleccionado: " + item);
-                        Log.d("LibroDetalle", "Título: " + item.getTitulo());
-                        i.putExtra("libro", item);
-                        startActivity(i);
+                        navigateToDetail(item);
                     } else {
                         Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
                     }
@@ -173,7 +171,7 @@ public class FavoritesFragment extends Fragment {
         filterDialog.show(this.getChildFragmentManager(), "filtros_dialog");
     }
 
-    public void eliminarFavorito(int id){
+    /*public void eliminarFavorito(int id){
         libros.remove(libros.get(id));
        // Call<Request> call = librosApiAdapter.getApiService().eliminarFavorito("64a4ba06d07e9",id);
         /*call.enqueue(new Callback<Request>(){
@@ -187,5 +185,9 @@ public class FavoritesFragment extends Fragment {
 
             }
         });*/
+    private void navigateToDetail(Libro item) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("libro", item);
+        Navigation.findNavController(requireActivity(), R.id.mainNavHost).navigate(R.id.action_menu_favorites_to_menu_book_details, bundle);
     }
 }

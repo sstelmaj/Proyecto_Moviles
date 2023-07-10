@@ -7,10 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.proyecto_moviles.Modelo.LibroFavorito;
-import com.example.proyecto_moviles.Modelo.Request;
-import com.example.proyecto_moviles.rest.dao.FavoritosBody;
-import com.example.proyecto_moviles.rest.librosApiAdapter;
+import com.example.proyecto_moviles.domain.LibroFavorito;
+import com.example.proyecto_moviles.rest.LibrosApiService;
+import com.example.proyecto_moviles.rest.dto.FavoritosBody;
+import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
+import com.example.proyecto_moviles.rest.LibrosApiClient;
 import com.example.proyecto_moviles.utils.OnImageClickListener;
 import com.squareup.picasso.Picasso;
 import android.widget.TextView;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.Modelo.Libro;
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 
@@ -136,10 +137,10 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
 
     public void cambiarEstadoFavorito(boolean estado, int position) {
         if (estado) {
-            Call<Request> call = librosApiAdapter.getApiService().eliminarFavorito("Bearer 64aa1393ba4ed", libros.get(position).getFav_id());
-            call.enqueue(new Callback<Request>() {
+            Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer 64ab4d9388dda", libros.get(position).getFav_id());
+            call.enqueue(new Callback<RequestWithDataArray>() {
                 @Override
-                public void onResponse(Call<Request> call, Response<Request> response) {
+                public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                     System.out.println("CORRECTO ELIMINADO A FAVORITO");
                     System.out.println("CORRECTO ELIMINADO A FAVORITO");
                     System.out.println("CORRECTO ELIMINADO A FAVORITO");
@@ -147,7 +148,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
                 }
 
                 @Override
-                public void onFailure(Call<Request> call, Throwable t) {
+                public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
                     System.out.println("MAL ELIMINADO A FAVORITO");
                     System.out.println("MAL ELIMINADO A FAVORITO");
                     System.out.println("MAL ELIMINADO A FAVORITO");
@@ -156,10 +157,10 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
             });
         } else {
             FavoritosBody favoritosBody=new FavoritosBody(19,libros.get(position).getId());
-            Call<Request> call = librosApiAdapter.getApiService().agregarFavorito("Bearer 64aa1393ba4ed", favoritosBody);
-            call.enqueue(new Callback<Request>() {
+            Call<RequestWithDataArray> call = LibrosApiService.getApiService().agregarFavorito("Bearer 64ab4d9388dda", favoritosBody);
+            call.enqueue(new Callback<RequestWithDataArray>() {
                 @Override
-                public void onResponse(Call<Request> call, Response<Request> response) {
+                public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
                     System.out.println("CORRECTO AGREGADO A FAVORITO");
                     System.out.println("CORRECTO AGREGADO A FAVORITO");
                     System.out.println("CORRECTO AGREGADO A FAVORITO");
@@ -167,7 +168,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
                 }
                 
                 @Override
-                public void onFailure(Call<Request> call, Throwable t) {
+                public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
                     System.out.println("MAL AGREGADO A FAVORITO");
                     System.out.println("MAL AGREGADO A FAVORITO");
                     System.out.println("MAL AGREGADO A FAVORITO");

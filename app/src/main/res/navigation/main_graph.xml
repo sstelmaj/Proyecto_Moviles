@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/menu_home">
+
+    <fragment
+        android:id="@+id/menu_home"
+        android:name="com.example.proyecto_moviles.ui.home.HomeFragment"
+        android:label="@string/fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_menu_home_to_menu_add_suggestion"
+            app:destination="@id/menu_add_suggestion"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_menu_home_to_menu_book_detail"
+            app:destination="@id/menu_book_detail"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_menu_home_to_login2"
+            app:destination="@id/login" />
+        <!--        <action-->
+<!--            android:id="@+id/action_menu_home_to_login"-->
+<!--            app:destination="@id/login"-->
+<!--            app:enterAnim="@anim/enter_from_left"-->
+<!--            app:exitAnim="@anim/exit_to_right"-->
+<!--            app:popEnterAnim="@anim/enter_from_right"-->
+<!--            app:popExitAnim="@anim/exit_to_left"-->
+<!--            app:popUpToInclusive="false" />-->
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_reservations"
+        android:name="com.example.proyecto_moviles.ui.reservations.ReservationsFragment"
+        android:label="@string/fragment_reservations"
+        tools:layout="@layout/fragment_reservations" />
+
+    <fragment
+        android:id="@+id/menu_search"
+        android:name="com.example.proyecto_moviles.ui.search.SearchFragment"
+        android:label="@string/fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_menu_search_to_menu_book_details"
+            app:destination="@id/menu_book_detail"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_favorites"
+        android:name="com.example.proyecto_moviles.ui.favorites.FavoritesFragment"
+        android:label="@string/fragment_favorites"
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_menu_favorites_to_menu_book_details"
+            app:destination="@id/menu_book_detail"
+            app:enterAnim="@anim/enter_from_right"
+            app:exitAnim="@anim/exit_to_left"
+            app:popEnterAnim="@anim/enter_from_left"
+            app:popExitAnim="@anim/exit_to_right"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_profile"
+        android:name="com.example.proyecto_moviles.ui.profile.ProfileFragment"
+        android:label="@string/fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_menu_profile_to_login"
+            app:destination="@id/login" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/menu_add_suggestion"
+        android:name="com.example.proyecto_moviles.ui.suggestion.SuggestionFragment"
+        android:label="@string/fragment_suggestion"
+        tools:layout="@layout/fragment_suggestion" />
+
+    <fragment android:id="@+id/menu_book_detail"
+        android:name="com.example.proyecto_moviles.ui.book_detail.BookDetailFragment"
+        android:label="@string/fragment_details"
+        tools:layout="@layout/fragment_book_detail">
+        <argument
+            android:name="libro"
+            app:argType="com.example.proyecto_moviles.domain.Libro" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.proyecto_moviles.ui.login.LoginFragment"
+        android:label="@string/fragment_login"
+        tools:layout="@layout/fragment_login" />
+
+</navigation>
