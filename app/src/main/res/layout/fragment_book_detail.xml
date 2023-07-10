@@ -34,6 +34,7 @@
                     app:layout_constraintTop_toBottomOf="@id/detalleTitulo"
                     app:srcCompat="@drawable/menu_book_fill0_wght400_grad0_opsz48" />
 
+
                 <TextView
                     android:id="@+id/detalleTitulo"
                     android:layout_width="match_parent"
@@ -61,16 +62,40 @@
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@id/detalleImagen">
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/containerFavorito"
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_marginStart="0dp"
                         android:layout_marginTop="20dp"
                         android:layout_marginBottom="20dp"
-                        android:text="Descipcion del libro"
-                        android:textColor="@android:color/black"
-                        android:textSize="24sp"
-                        android:textStyle="bold" />
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/textoDescripcion"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="0dp"
+                            android:layout_marginTop="00dp"
+                            android:layout_marginBottom="00dp"
+                            android:text="Descipcion del libro"
+                            android:textColor="@android:color/black"
+                            android:textSize="24sp"
+                            android:textStyle="bold" />
+
+                        <ToggleButton
+                            android:id="@+id/detalleFavorito"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginStart="5dp"
+                            android:background="@drawable/toggle_selector"
+                            android:onClick="onToggleClick"
+                            android:textOff=""
+                            android:textOn=""
+                            android:layout_gravity="bottom"
+                            app:layout_constraintStart_toEndOf="@+id/textoDescripcion"
+
+                            />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/detalleDescripcion"

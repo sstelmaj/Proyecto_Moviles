@@ -16,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.CommentsAdapter;
@@ -59,6 +60,7 @@ public class BookDetailFragment extends Fragment {
     private ImageButton enviarComentario;
     private TextInputEditText inputComentario;
     private String comentario;
+    private ToggleButton botonFavorito;
 
 
     @Override
@@ -99,6 +101,7 @@ public class BookDetailFragment extends Fragment {
 
         enviarComentario = binding.detalleEnviarComentario;
         inputComentario = binding.detalleInputComentario;
+        botonFavorito = binding.detalleFavorito;
 
         imagen = binding.detalleImagen;
         Picasso.get()
@@ -109,6 +112,20 @@ public class BookDetailFragment extends Fragment {
         saveBookToLastSeen(libro.getIsbn());
 
         enviarComentario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                comentario = inputComentario.getText().toString();
+                if (comentario.equals("")){
+                    inputComentario.setError("Escribe un comentario !");
+                } else {
+                    postearComentario(comentario);
+                    inputComentario.setText("");
+                    inputComentario.clearFocus();
+                }
+            }
+        });
+
+        botonFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 comentario = inputComentario.getText().toString();
