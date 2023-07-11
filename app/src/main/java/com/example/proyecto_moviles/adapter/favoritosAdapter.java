@@ -71,7 +71,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
     @Override
     public favoritosAdapter.FavoritoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(rowLayout, parent, false);
-        return new FavoritoViewHolder(view,R.drawable.favorite_fill0_wght400_grad0_opsz48 ,R.drawable.favoritosvg);
+        return new FavoritoViewHolder(view,R.drawable.baseline_favorite_border_24 ,R.drawable.baseline_favorite_24);
     }
 
     @Override

@@ -20,16 +20,24 @@ import android.widget.ToggleButton;
 
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.adapter.CommentsAdapter;
+import com.example.proyecto_moviles.adapter.favoritosAdapter;
 import com.example.proyecto_moviles.databinding.FragmentBookDetailBinding;
 import com.example.proyecto_moviles.domain.Comentario;
 import com.example.proyecto_moviles.domain.Libro;
+import com.example.proyecto_moviles.domain.LibroFavorito;
 import com.example.proyecto_moviles.rest.LibrosApiService;
+import com.example.proyecto_moviles.rest.dto.FavoritosBody;
 import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
 import com.example.proyecto_moviles.rest.dto.InputPostComentario;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
+import com.example.proyecto_moviles.utils.OnItemClickListener;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.gson.JsonArray;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,6 +54,8 @@ public class BookDetailFragment extends Fragment {
 
     private List<Comentario> comentarios;
     private CommentsAdapter adapter;
+    private List<LibroFavorito> libros = null;
+    private LibroFavorito libroFavorito;
 
     private RecyclerView recyclerView;
 
@@ -56,6 +66,7 @@ public class BookDetailFragment extends Fragment {
     private TextView autor;
     private TextView fecha;
     private TextView idioma;
+    private boolean esFavorito = false;
 
     private ImageButton enviarComentario;
     private TextInputEditText inputComentario;
@@ -111,6 +122,8 @@ public class BookDetailFragment extends Fragment {
         connectAndGetApiData();
         saveBookToLastSeen(libro.getIsbn());
 
+        obtenerLibrosFavoritos();
+
         enviarComentario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,13 +141,10 @@ public class BookDetailFragment extends Fragment {
         botonFavorito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                comentario = inputComentario.getText().toString();
-                if (comentario.equals("")){
-                    inputComentario.setError("Escribe un comentario !");
+                if (botonFavorito.isChecked()){
+                    setLibroFavorito();
                 } else {
-                    postearComentario(comentario);
-                    inputComentario.setText("");
-                    inputComentario.clearFocus();
+                    eliminarLibroFavorito();
                 }
             }
         });
@@ -205,6 +215,108 @@ public class BookDetailFragment extends Fragment {
             }
         });
 
+    }
+
+    public void esFavorito(){
+        if (libros == null) {
+            return;
+        }
+        for (LibroFavorito l : libros) {
+            if (l.getId() == libro.getId()) {
+                esFavorito = true;
+                botonFavorito.setChecked(true);
+                libroFavorito = l;
+                return;
+            }
+        }
+    }
+
+    public void obtenerLibrosFavoritos() {
+        prefs = requireActivity().getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        String tokenUsuario = prefs.getString("token", null);
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().obtenerFavoritos("Bearer " + tokenUsuario);
+        call.enqueue(new Callback<RequestWithDataArray>() {
+            @Override
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
+                if (response.isSuccessful()) {
+                    RequestWithDataArray request = response.body();
+                    JsonArray datos = request.getData();
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    try {
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        System.out.println("ENTRO EN ON RESPONSE");
+                        libros = objectMapper.readValue(String.valueOf(datos), new TypeReference<List<LibroFavorito>>() {
+                        });
+                        esFavorito();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                //for (LibroFavorito l : libros) {
+                //    if (l.getId() == libro.getId()) {
+                //        //es favorito
+                //        botonFavorito.setChecked(true);
+                //    }
+                //}
+
+            }
+            @Override
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+            }
+        });
+    }
+
+    public void setLibroFavorito(){
+        prefs = requireActivity().getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        String tokenUsuario = prefs.getString("token", null);
+        FavoritosBody favoritosBody=new FavoritosBody(prefs.getString("id", null), libro.getId());
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().agregarFavorito("Bearer "+tokenUsuario, favoritosBody);
+        call.enqueue(new Callback<RequestWithDataArray>() {
+            @Override
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
+                System.out.println("CORRECTO AGREGADO A FAVORITO");
+                System.out.println("CORRECTO AGREGADO A FAVORITO");
+                System.out.println("CORRECTO AGREGADO A FAVORITO");
+                System.out.println("CORRECTO AGREGADO A FAVORITO");
+            }
+
+            @Override
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+                System.out.println("MAL AGREGADO A FAVORITO");
+                System.out.println("MAL AGREGADO A FAVORITO");
+                System.out.println("MAL AGREGADO A FAVORITO");
+                System.out.println("MAL AGREGADO A FAVORITO");
+            }
+        });
+    }
+
+    public void eliminarLibroFavorito(){
+        prefs = requireActivity().getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
+        String tokenUsuario = prefs.getString("token", null);
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer " + tokenUsuario, libroFavorito.getFav_id());
+        call.enqueue(new Callback<RequestWithDataArray>() {
+            @Override
+            public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
+                System.out.println("CORRECTO ELIMINADO A FAVORITO");
+                System.out.println("CORRECTO ELIMINADO A FAVORITO");
+                System.out.println("CORRECTO ELIMINADO A FAVORITO");
+                System.out.println("CORRECTO ELIMINADO A FAVORITO");
+            }
+
+            @Override
+            public void onFailure(Call<RequestWithDataArray> call, Throwable t) {
+                System.out.println("MAL ELIMINADO A FAVORITO");
+                System.out.println("MAL ELIMINADO A FAVORITO");
+                System.out.println("MAL ELIMINADO A FAVORITO");
+                System.out.println("MAL ELIMINADO A FAVORITO");
+            }
+        });
     }
 
 }
