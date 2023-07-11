@@ -299,6 +299,10 @@ public class BookDetailFragment extends Fragment {
     public void eliminarLibroFavorito(){
         prefs = requireActivity().getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
         String tokenUsuario = prefs.getString("token", null);
+        if (libroFavorito == null){
+            botonFavorito.setChecked(false);
+            return;
+        }
         Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer " + tokenUsuario, libroFavorito.getFav_id());
         call.enqueue(new Callback<RequestWithDataArray>() {
             @Override
