@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_home"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:layout_marginHorizontal="20dp"
     tools:context=".ui.home.HomeFragment">
 
@@ -16,15 +16,18 @@
         android:layout_height="wrap_content"
         android:divider="@drawable/horizontal_spacing_divider"
         android:orientation="horizontal"
+        android:scrollbars="horizontal"
         android:showDividers="middle"
+        android:layout_marginTop="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_favoritos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:text="RECIENTES"
+            android:text="FAVORITOS"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -33,10 +36,11 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_recomendados"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
-            android:text="POPULARES"
+            android:text="RECOMENDADOS"
             android:textColor="@color/white"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -45,22 +49,11 @@
             app:chipStrokeWidth="1dp" />
 
         <com.google.android.material.chip.Chip
+            android:id="@+id/chip_categorias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkable="false"
             android:text="CATEGORIAS"
-            android:textColor="@color/colorPrimary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            app:chipBackgroundColor="@color/imageBackground"
-            app:chipStrokeColor="@color/colorPrimary"
-            app:chipStrokeWidth="1dp" />
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checkable="false"
-            android:text="AUTOR"
             android:textColor="@color/colorPrimary"
             android:textSize="12sp"
             android:textStyle="bold"
@@ -103,6 +96,7 @@
                 android:layout_weight="1" />
 
             <TextView
+                android:id="@+id/ver_mas_recomendados"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ver más"
@@ -126,7 +120,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!--    ULTIMOS VISTOS-->
+    <!--    ULTIMOS VISTOS  -->
     <LinearLayout
         android:id="@+id/ultimos_vistos_layout"
         android:layout_width="match_parent"
@@ -167,10 +161,11 @@
 
     </LinearLayout>
 
+<!--    FAB BUTTOM PARA AGREGAR SUGERENCIA  -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
+        android:layout_height="match_parent"
+        android:gravity="end|bottom"
         app:layout_constraintTop_toBottomOf="@+id/ultimos_vistos_layout">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -178,7 +173,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
             android:src="@drawable/outline_book_add_24"
             app:backgroundTint="@color/colorPrimary"
             app:tint="@color/white" />

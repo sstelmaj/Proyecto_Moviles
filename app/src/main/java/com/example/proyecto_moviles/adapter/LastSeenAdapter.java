@@ -43,7 +43,7 @@ public class LastSeenAdapter extends RecyclerView.Adapter<LastSeenAdapter.LastSe
                 .error(android.R.drawable.sym_def_app_icon)
                 .into(holder.bookImage);
 
-        holder.btnDetails.setOnClickListener(
+        holder.itemView.setOnClickListener(
                 v -> onItemClickListener.onItemClick(lastSeenBooks.get(position))
         );
     }

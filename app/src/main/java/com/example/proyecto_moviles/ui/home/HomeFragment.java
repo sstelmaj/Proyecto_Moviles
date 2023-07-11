@@ -95,6 +95,27 @@ public class HomeFragment extends Fragment {
 
         checkIfLogged();
 
+        binding.chipFavoritos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.menu_favorites);
+            }
+        });
+
+        binding.chipCategorias.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.menu_search);
+            }
+        });
+
+        binding.verMasRecomendados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navController.navigate(R.id.menu_search);
+            }
+        });
+
         binding.fabAddSuggestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

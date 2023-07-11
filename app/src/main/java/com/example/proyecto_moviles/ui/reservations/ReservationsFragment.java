@@ -11,9 +11,11 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.proyecto_moviles.R;
@@ -43,7 +45,7 @@ import retrofit2.Response;
 public class ReservationsFragment extends Fragment {
 
     private FragmentReservationsBinding binding;
-
+    private TextView txtNoHayReservas;
     private RecyclerView recyclerView;
     private SharedPreferences usuarioLogueadoPreferences;
     private LinearLayoutManager layoutManagerReservas;
@@ -57,6 +59,7 @@ public class ReservationsFragment extends Fragment {
         View root = binding.getRoot();
         usuarioLogueadoPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
         layoutManagerReservas = new LinearLayoutManager(this.getContext(), LinearLayoutManager.VERTICAL, false);
+        txtNoHayReservas = binding.txtNoHayReservas;
         recyclerView = binding.RecyclerViewReservas;
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManagerReservas);
@@ -87,11 +90,15 @@ public class ReservationsFragment extends Fragment {
                     try {
                         reservas= objectMapper.readValue(String.valueOf(datos),new TypeReference<List<Reserva>>() { });
                         libros.clear();
+
                         if(reservas!=null){
+                            txtNoHayReservas.setVisibility(View.GONE);
                             for(Reserva r:reservas) {
                                 System.out.println("RESERVA ISBN: "+r.getIsbn_libro());
                                 connectAndGetApiDataLibrosReservados(r);
                             }
+                        } else {
+                            txtNoHayReservas.setVisibility(View.VISIBLE);
                         }
                     } catch (IOException e) {
                         throw new RuntimeException(e);

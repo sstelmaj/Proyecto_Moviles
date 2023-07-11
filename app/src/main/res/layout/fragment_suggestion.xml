@@ -5,115 +5,120 @@
     android:id="@+id/fragment_suggestion"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.suggestion.SuggestionFragment"
-    android:paddingHorizontal="20dp">
+    tools:context=".ui.suggestion.SuggestionFragment">
 
 <!--    FORMULARIO-->
-    <LinearLayout
-        android:id="@+id/suggestion_form_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:divider="@drawable/vertical_spacing_divider"
-        android:orientation="vertical"
-        android:showDividers="middle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="15dp"
-            android:text="Rellene el formulario con los datos del libro \nque sugiere agregar a la biblioteca"
-            android:textAlignment="center" />
-
-        <com.google.android.material.divider.MaterialDivider
+        android:layout_height="match_parent" >
+        <LinearLayout
+            android:id="@+id/suggestion_form_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginVertical="5dp" />
+            android:divider="@drawable/vertical_spacing_divider"
+            android:orientation="vertical"
+            android:showDividers="middle"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-<!--        INPUTS -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/txt_name"
-            style="?attr/textInputOutlinedStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Nombre*"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:errorEnabled="true"
-            app:boxStrokeErrorColor="@color/colorError">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="match_parent"
+                android:layout_marginTop="15dp"
+                android:text="Rellene el formulario con los datos del libro \nque sugiere agregar a la biblioteca"
+                android:textAlignment="center" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="?attr/textInputOutlinedStyle"
-            android:id="@+id/txt_isbn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="ISBN"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:errorEnabled="true"
-            app:boxStrokeErrorColor="@color/colorError">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginVertical="5dp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="?attr/textInputOutlinedStyle"
-            android:id="@+id/txt_link"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Link del recurso"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:errorEnabled="true"
-            app:boxStrokeErrorColor="@color/colorError">
-
-            <com.google.android.material.textfield.TextInputEditText
+            <!--        INPUTS -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/txt_name"
+                style="?attr/textInputOutlinedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:hint="Nombre*"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:errorEnabled="true"
+                app:boxStrokeErrorColor="@color/colorError">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="?attr/textInputOutlinedStyle"
-            android:id="@+id/txt_reason"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Razon de sugerencia*"
-            app:helperTextEnabled="true"
-            app:boxCornerRadiusBottomEnd="10dp"
-            app:boxCornerRadiusBottomStart="10dp"
-            app:boxCornerRadiusTopEnd="10dp"
-            app:boxCornerRadiusTopStart="10dp"
-            app:errorEnabled="true"
-            app:boxStrokeErrorColor="@color/colorError">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
+                android:id="@+id/txt_isbn"
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:hint="ISBN"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:errorEnabled="true"
+                app:boxStrokeErrorColor="@color/colorError">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_send_suggestion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:padding="16dp"
-            android:text="Enviar sugerencia"
-            app:cornerRadius="10dp" />
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
+                android:id="@+id/txt_link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Link del recurso"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:errorEnabled="true"
+                app:boxStrokeErrorColor="@color/colorError">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
+                android:id="@+id/txt_reason"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Razon de sugerencia*"
+                app:helperTextEnabled="true"
+                app:boxCornerRadiusBottomEnd="10dp"
+                app:boxCornerRadiusBottomStart="10dp"
+                app:boxCornerRadiusTopEnd="10dp"
+                app:boxCornerRadiusTopStart="10dp"
+                app:errorEnabled="true"
+                app:boxStrokeErrorColor="@color/colorError">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_send_suggestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="16dp"
+                android:text="Enviar sugerencia"
+                app:cornerRadius="10dp" />
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

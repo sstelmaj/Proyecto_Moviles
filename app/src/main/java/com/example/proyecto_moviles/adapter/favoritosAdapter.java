@@ -13,7 +13,6 @@ import com.example.proyecto_moviles.domain.LibroFavorito;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.FavoritosBody;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
-import com.example.proyecto_moviles.ui.MainActivity;
 import com.example.proyecto_moviles.utils.OnItemClickListener2;
 import com.squareup.picasso.Picasso;
 import android.widget.TextView;

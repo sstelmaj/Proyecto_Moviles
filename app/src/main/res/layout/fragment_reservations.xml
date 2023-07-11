@@ -8,27 +8,24 @@
     tools:context=".ui.reservations.ReservationsFragment">
 
     <TextView
-        android:id="@id/titulo"
+        android:id="@+id/txt_no_hay_reservas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        android:textColor="@android:color/black"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:text="Mis reservas" />
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="20dp"
+        android:text="No tienes reservas actualmente" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerViewReservas"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="1dp"
+        android:layout_marginHorizontal="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titulo">
+        app:layout_constraintTop_toTopOf="parent">
     </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

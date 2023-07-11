@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.example.proyecto_moviles.databinding.FragmentFavoritesBinding;
 import com.example.proyecto_moviles.domain.Libro;
@@ -52,6 +53,8 @@ public class FavoritesFragment extends Fragment {
     private List<LibroFavorito> libros;
     private favoritosAdapter adapter;
 
+    private TextView txtNoHayFavoritos;
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -61,6 +64,7 @@ public class FavoritesFragment extends Fragment {
         Button btnOrdenar=binding.btnOrdenar;
         Button btnFiltros=binding.btnFiltrar;
         EditText buscador=binding.etBuscador;
+        txtNoHayFavoritos = binding.txtNoHayFavoritos;
         GridLayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2);
         usuarioLogueadoPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
 
@@ -122,21 +126,28 @@ public class FavoritesFragment extends Fragment {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity(),usuarioLogueadoPreferences);
-
-                    //adapter = new BooksAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
-                        @Override
-                        public void onItemClick(Libro item) {
-                            if (item != null) {
-                               navigateToDetail(item);
-                            } else {
-                                Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                    if(!libros.isEmpty()){
+                        txtNoHayFavoritos.setVisibility(View.GONE);
+                        binding.etBuscador.setVisibility(View.VISIBLE);
+                        binding.layoutFiltros.setVisibility(View.VISIBLE);
+                        adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity(),usuarioLogueadoPreferences);
+                        adapter.setOnItemClickListener(new OnItemClickListener() {
+                            @Override
+                            public void onItemClick(Libro item) {
+                                if (item != null) {
+                                    navigateToDetail(item);
+                                } else {
+                                    Toast.makeText(requireActivity(), "No se ha seleccionado ningún libro", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
 
-                    });
-                    recyclerView.setAdapter(adapter);
+                        });
+                        recyclerView.setAdapter(adapter);
+                    } else {
+                        txtNoHayFavoritos.setVisibility(View.VISIBLE);
+                        binding.etBuscador.setVisibility(View.GONE);
+                        binding.layoutFiltros.setVisibility(View.GONE);
+                    }
                 }
             }
             @Override

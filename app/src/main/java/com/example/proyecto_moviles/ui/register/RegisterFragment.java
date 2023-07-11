@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.databinding.FragmentRegisterBinding;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.RegistroUsuarioDto;
@@ -36,6 +39,7 @@ public class RegisterFragment extends Fragment {
     private @NonNull FragmentRegisterBinding binding;
 
     private boolean isValidForm = false;
+    private NavController navController;
 
     public RegisterFragment() {
         // Required empty public constructor
@@ -51,6 +55,14 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding= FragmentRegisterBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+//        binding.txtLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                navController = Navigation.findNavController(getView());
+//                navController.navigate(R.id.fragment_login);
+//            }
+//        });
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
