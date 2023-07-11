@@ -6,6 +6,7 @@ import com.example.proyecto_moviles.domain.Comentario;
 
 import com.example.proyecto_moviles.rest.dto.FavoritosBody;
 import com.example.proyecto_moviles.rest.dto.InputSugerencia;
+import com.example.proyecto_moviles.rest.dto.RequestReservaWithDataArray;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
 import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataObject;
@@ -29,7 +30,7 @@ public interface LibrosApiClient {
     Call<RequestWithDataArray> getLibros();
 
     @GET("libros/obtener-libro")
-    Call<RequestWithDataArray> obtenerPorISBN(@Query("isbn") String isbn);
+    Call<RequestReservaWithDataArray> obtenerPorISBN(@Query("isbn") String isbn);
 
     @GET("libros/obtener-libros")
     Call<RequestWithDataArray> obtenerRecomendados();
@@ -56,6 +57,8 @@ public interface LibrosApiClient {
     @GET("favoritos/obtener-favoritos")
     Call<RequestWithDataArray> obtenerFavoritos(@Header("Authorization") String token);
 
+    @GET("reservas/obtener")
+    Call<RequestReservaWithDataArray> obtenerReservas(@Header("Authorization") String token, @Query("id") String idUsuario);
 
     /*
     @FormUrlEncoded

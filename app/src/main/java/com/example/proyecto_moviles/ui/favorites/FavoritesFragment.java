@@ -1,5 +1,7 @@
 package com.example.proyecto_moviles.ui.favorites;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -27,6 +29,7 @@ import com.example.proyecto_moviles.adapter.favoritosAdapter;
 //import com.example.proyecto_moviles.databinding.FragmentSearchBinding;
 //import com.example.proyecto_moviles.ui.LibroDetalle;
 import com.example.proyecto_moviles.rest.LibrosApiService;
+import com.example.proyecto_moviles.ui.MainActivity;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,6 +48,7 @@ public class FavoritesFragment extends Fragment {
 
     private FragmentFavoritesBinding binding;
     private RecyclerView recyclerView;
+    private SharedPreferences usuarioLogueadoPreferences;
     private List<LibroFavorito> libros;
     private favoritosAdapter adapter;
 
@@ -58,6 +62,7 @@ public class FavoritesFragment extends Fragment {
         Button btnFiltros=binding.btnFiltrar;
         EditText buscador=binding.etBuscador;
         GridLayoutManager layoutManager = new GridLayoutManager(this.getActivity(), 2);
+        usuarioLogueadoPreferences = ((MainActivity) requireActivity()).getSharedPreferences("MisPreferencias.UsuarioLogueado", Context.MODE_PRIVATE);
 
         recyclerView = binding.RecyclerViewFavoritos;
         recyclerView.setHasFixedSize(true);
@@ -101,7 +106,8 @@ public class FavoritesFragment extends Fragment {
         return root;
     }
     public void connectAndGetApiData() {
-        Call<RequestWithDataArray> call = LibrosApiService.getApiService().obtenerFavoritos("Bearer 64ab4d9388dda");
+        String tokenUsuario=this.usuarioLogueadoPreferences.getString("token",null);
+        Call<RequestWithDataArray> call = LibrosApiService.getApiService().obtenerFavoritos("Bearer "+tokenUsuario);
         call.enqueue(new Callback<RequestWithDataArray>(){
             @Override
             public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
@@ -116,7 +122,7 @@ public class FavoritesFragment extends Fragment {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
+                    adapter = new favoritosAdapter(libros, R.layout.list_item_libro_favorito, getActivity(),usuarioLogueadoPreferences);
 
                     //adapter = new BooksAdapter(libros, R.layout.list_item_libro_favorito, getActivity());
                     adapter.setOnItemClickListener(new OnItemClickListener() {
@@ -149,7 +155,7 @@ public class FavoritesFragment extends Fragment {
                 }
             }
 
-            adapter = new favoritosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity());
+            adapter = new favoritosAdapter(librosFiltrados, R.layout.list_item_libro_favorito, getActivity(),usuarioLogueadoPreferences);
             adapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(Libro item) {
