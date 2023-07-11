@@ -78,7 +78,7 @@
                 android:id="@+id/favorito"
                 android:layout_width="30dp"
                 android:layout_height="match_parent"
-                app:srcCompat="@drawable/favoritosvg" />
+                app:srcCompat="@drawable/baseline_favorite_24" />
         </LinearLayout>
 
     </LinearLayout>
