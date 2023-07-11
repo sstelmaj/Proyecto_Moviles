@@ -4,8 +4,10 @@ package com.example.proyecto_moviles.rest;
 
 import com.example.proyecto_moviles.domain.Comentario;
 
+import com.example.proyecto_moviles.rest.dto.DatosUsuarioDto;
 import com.example.proyecto_moviles.rest.dto.InputPostComentario;
 import com.example.proyecto_moviles.rest.dto.InputSugerencia;
+import com.example.proyecto_moviles.rest.dto.RegistroUsuarioDto;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
 import com.example.proyecto_moviles.rest.dto.InputObtenerComentarios;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataObject;
@@ -49,8 +51,26 @@ public interface LibrosApiClient {
 
     @POST("/comentarios")
     Call<RequestWithDataArray> postComentario(@Header("Authorization") String token, @Body InputPostComentario body);
-    /*
+
     @FormUrlEncoded
+    @POST("/usuarios/registro")
+    Call<RequestWithDataArray> registrarUsuario(
+            @Field("documento") String documento,
+            @Field("nombre") String nombre,
+            @Field("apellido") String apellido,
+            @Field("mail") String mail,
+            @Field("telefono") String telefono,
+            @Field("clave") String clave
+    );
+
+    /*
+    @POST("/usuarios/registro")
+    Call<RequestWithDataArray> registrarUsuario(@Body RegistroUsuarioDto body);
+    */
+
+
+    /*
+
     @POST("comentarios/vigentes")
     Call<List<Comentario>> getComentarios(@Field("lib_id") int lib_id);
     */
