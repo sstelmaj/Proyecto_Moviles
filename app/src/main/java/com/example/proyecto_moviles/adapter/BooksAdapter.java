@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.example.proyecto_moviles.utils.OnImageClickListener;
+import com.example.proyecto_moviles.utils.OnItemClickListener2;
 import com.squareup.picasso.Picasso;
 import android.widget.TextView;
 
@@ -26,7 +26,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.LibroViewHol
     private Context context;
 
     private OnItemClickListener onItemClickListener;
-    private OnImageClickListener onImageClickListener;
+    private OnItemClickListener2 onItemClickListener2;
 
     public BooksAdapter(List<Libro> libros, int rowLayout, Context context) {
         this.libros = libros;

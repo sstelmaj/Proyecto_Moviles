@@ -1,10 +1,12 @@
 package com.example.proyecto_moviles.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Libro implements Serializable {
 
     @SerializedName("id")
@@ -38,6 +40,8 @@ public class Libro implements Serializable {
     @SerializedName("categorias")
     private List<Categoria> categorias;
 
+
+
     /*
     @SerializedName("lib_fecha_creado")
     private String fecha_creado;
@@ -62,6 +66,22 @@ public class Libro implements Serializable {
     public Libro(String titulo, String autor) {
         this.titulo = titulo;
         this.autores = autor;
+    }
+
+    public Libro(int id, int stock, String isbn, String titulo, String imagen, String descripcion, String autores, String edicion, String novedades, String fechaLanzamiento, String idioma, Double puntuacion, String vigencia) {
+        this.id = id;
+        this.stock = stock;
+        this.isbn = isbn;
+        this.titulo = titulo;
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.autores = autores;
+        this.edicion = edicion;
+        this.novedades = novedades;
+        this.fechaLanzamiento = fechaLanzamiento;
+        this.idioma = idioma;
+        this.puntuacion = puntuacion;
+        this.vigencia = vigencia;
     }
 
     public int getId() {
@@ -176,4 +196,5 @@ public class Libro implements Serializable {
     public void setCategorias(List<Categoria> categorias) {
         this.categorias = categorias;
     }
+
 }

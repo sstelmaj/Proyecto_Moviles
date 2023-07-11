@@ -2,6 +2,7 @@ package com.example.proyecto_moviles.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +12,14 @@ import com.example.proyecto_moviles.domain.LibroFavorito;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.FavoritosBody;
 import com.example.proyecto_moviles.rest.dto.RequestWithDataArray;
-import com.example.proyecto_moviles.rest.LibrosApiClient;
-import com.example.proyecto_moviles.utils.OnImageClickListener;
+import com.example.proyecto_moviles.ui.MainActivity;
+import com.example.proyecto_moviles.utils.OnItemClickListener2;
 import com.squareup.picasso.Picasso;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.R;
 import com.example.proyecto_moviles.utils.OnItemClickListener;
 
@@ -38,12 +38,14 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
 
 
     private OnItemClickListener onItemClickListener;
-    private OnImageClickListener onImageClickListener;
+    private OnItemClickListener2 onItemClickListener2;
+    private SharedPreferences usuarioLogueadoPreferences;
 
-    public favoritosAdapter(List<LibroFavorito> libros, int rowLayout, Context context) {
+    public favoritosAdapter(List<LibroFavorito> libros, int rowLayout, Context context,SharedPreferences sharedPreferences) {
         this.libros = libros;
         this.rowLayout = rowLayout;
         this.context = context;
+        this.usuarioLogueadoPreferences=sharedPreferences;
     }
     //A view holder inner class where we get reference to the views in the layout using their ID
     public static class FavoritoViewHolder extends RecyclerView.ViewHolder {
@@ -127,8 +129,8 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
         this.onItemClickListener = onItemClickListener;
     }
 
-    public void setOnImageClickListener(OnImageClickListener onImageClickListener) {
-        this.onImageClickListener = onImageClickListener;
+    public void setOnImageClickListener(OnItemClickListener2 onItemClickListener2) {
+        this.onItemClickListener2 = onItemClickListener2;
     }
 
     //Declaramos el get y set para el clicklistener
@@ -137,8 +139,10 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
     }
 
     public void cambiarEstadoFavorito(boolean estado, int position) {
+
+        String tokenUsuario=this.usuarioLogueadoPreferences.getString("token",null);
         if (!estado) {
-            Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer 64ab4d9388dda", libros.get(position).getFav_id());
+            Call<RequestWithDataArray> call = LibrosApiService.getApiService().eliminarFavorito("Bearer "+tokenUsuario, libros.get(position).getFav_id());
             call.enqueue(new Callback<RequestWithDataArray>() {
                 @Override
                 public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
@@ -157,8 +161,8 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
                 }
             });
         } else {
-            FavoritosBody favoritosBody=new FavoritosBody(19,libros.get(position).getId());
-            Call<RequestWithDataArray> call = LibrosApiService.getApiService().agregarFavorito("Bearer 64ab4d9388dda", favoritosBody);
+            FavoritosBody favoritosBody=new FavoritosBody(this.usuarioLogueadoPreferences.getString("id",null),libros.get(position).getId());
+            Call<RequestWithDataArray> call = LibrosApiService.getApiService().agregarFavorito("Bearer "+tokenUsuario, favoritosBody);
             call.enqueue(new Callback<RequestWithDataArray>() {
                 @Override
                 public void onResponse(Call<RequestWithDataArray> call, Response<RequestWithDataArray> response) {
