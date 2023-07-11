@@ -177,20 +177,6 @@ public class FavoritesFragment extends Fragment {
         filterDialog.show(this.getChildFragmentManager(), "filtros_dialog");
     }
 
-    /*public void eliminarFavorito(int id){
-        libros.remove(libros.get(id));
-       // Call<Request> call = librosApiAdapter.getApiService().eliminarFavorito("64a4ba06d07e9",id);
-        /*call.enqueue(new Callback<Request>(){
-            @Override
-            public void onResponse(Call<Request> call, Response<Request> response) {
-                adapter.changeEstadoFavorito();
-            }
-
-            @Override
-            public void onFailure(Call<Request> call, Throwable t) {
-
-            }
-        });*/
     private void navigateToDetail(Libro item) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("libro", item);

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.proyecto_moviles.domain.Libro;
 import com.example.proyecto_moviles.domain.LibroFavorito;
 import com.example.proyecto_moviles.rest.LibrosApiService;
 import com.example.proyecto_moviles.rest.dto.FavoritosBody;
@@ -89,7 +90,7 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
         holder.data.setText(libros.get(position).getAutores());
         this.imgFavorito=holder.favImage;
 
-        //enlazamos el clicklistener al item
+        //enlazamos el clicklistener al icono de favoritos
         holder.favImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,13 +113,10 @@ public class favoritosAdapter extends RecyclerView.Adapter<favoritosAdapter.Favo
             }
         });
 
-
-
-        /*View.OnClickListener listener = v -> onItemClickListener.onItemClick(libros.get(position));
+        Libro libroAPartirDeFav = new Libro(libros.get(position));
+        View.OnClickListener listener = v -> onItemClickListener.onItemClick(libroAPartirDeFav);
         holder.libroTitle.setOnClickListener(listener);
         holder.data.setOnClickListener(listener);
-        View.OnClickListener listener = v -> onItemClickListener.onItemClick(libros.get(position));
-        holder.favImage.setOnClickListener(listener);*/
     }
     @Override
     public int getItemCount() {

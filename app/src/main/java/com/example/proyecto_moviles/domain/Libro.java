@@ -63,6 +63,23 @@ public class Libro implements Serializable {
     public Libro() {
     }
 
+    public Libro(LibroFavorito libroFavorito) {
+        this.id = libroFavorito.getId();
+        this.stock = libroFavorito.getStock();
+        this.isbn = libroFavorito.getIsbn();
+        this.titulo = libroFavorito.getTitulo();
+        this.imagen = libroFavorito.getImagen();
+        this.descripcion = libroFavorito.getDescripcion();
+        this.autores = libroFavorito.getAutores();
+        this.edicion = libroFavorito.getEdicion();
+        this.novedades = libroFavorito.getNovedades();
+        this.fechaLanzamiento = libroFavorito.getFechaLanzamiento();
+        this.idioma = libroFavorito.getIdioma();
+        this.puntuacion = libroFavorito.getPuntuacion();
+        this.vigencia = libroFavorito.getVigencia();
+        this.categorias = libroFavorito.getCategorias();
+    }
+
     public Libro(String titulo, String autor) {
         this.titulo = titulo;
         this.autores = autor;

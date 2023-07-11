@@ -75,7 +75,7 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
+        binding.txtRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 navController = Navigation.findNavController(getView());

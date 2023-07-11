@@ -13,11 +13,12 @@
 
     <color name="transparent">#00000000</color>
     <color name="colorPrimary">#006FFD</color>
-    <color name="colorPrimaryDark">#006FFD</color>
-    <color name="colorSecondary">#F8F9FE</color>
+    <color name="colorPrimaryDark">#0053C1</color>
+    <color name="colorAccent">#B8DBD9</color>
+    <color name="colorSecondary">#F4F4F9</color>
     <color name="imageBackground">#EAF2FF</color>
     <color name="colorError">#FF0000</color>
     <color name="colorSuccess">#00FF00</color>
-    <color name="inputBase">#006FFD</color>
+    <color name="inputBase">#B8DBD9</color>
 
 </resources>
