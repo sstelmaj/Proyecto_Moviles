@@ -3,7 +3,7 @@ package com.example.proyecto_moviles.rest;
 
 
 import com.example.proyecto_moviles.domain.Comentario;
-
+import com.example.proyecto_moviles.rest.dto.FavoritosBody;
 import com.example.proyecto_moviles.rest.dto.DatosUsuarioDto;
 import com.example.proyecto_moviles.rest.dto.InputPostComentario;
 import com.example.proyecto_moviles.rest.dto.InputSugerencia;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -49,6 +50,18 @@ public interface LibrosApiClient {
     @POST("/sugerencias")
     Call<RequestWithDataArray> sendSuggestion(@Header("Authorization") String token, @Body InputSugerencia body);
 
+
+    @DELETE("favoritos/delete")
+    Call<RequestWithDataArray> eliminarFavorito(@Header("Authorization") String token, @Query("id") int idLibro);
+
+    @POST("favoritos/create")
+    Call<RequestWithDataArray> agregarFavorito(@Header("Authorization") String token, @Body FavoritosBody favoritosBody);
+
+    @GET("favoritos/obtener-favoritos")
+    Call<RequestWithDataArray> obtenerFavoritos(@Header("Authorization") String token);
+
+
+    
     @POST("/comentarios")
     Call<RequestWithDataArray> postComentario(@Header("Authorization") String token, @Body InputPostComentario body);
 
