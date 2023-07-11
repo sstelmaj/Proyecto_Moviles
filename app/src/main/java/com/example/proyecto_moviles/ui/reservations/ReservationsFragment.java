@@ -86,8 +86,7 @@ public class ReservationsFragment extends Fragment {
 
                     try {
                         reservas= objectMapper.readValue(String.valueOf(datos),new TypeReference<List<Reserva>>() { });
-                        System.out.println("RESERVAS: "+reservas);
-                        System.out.println("Reservas "+reservas);
+                        libros.clear();
                         if(reservas!=null){
                             for(Reserva r:reservas) {
                                 System.out.println("RESERVA ISBN: "+r.getIsbn_libro());
