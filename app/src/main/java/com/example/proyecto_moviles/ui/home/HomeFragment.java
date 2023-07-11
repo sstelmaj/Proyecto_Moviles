@@ -215,7 +215,7 @@ public class HomeFragment extends Fragment {
     public void navigateToBookDetail(Libro libro) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("libro", libro);
-        navController.navigate(R.id.action_menu_favorites_to_menu_book_details, bundle);
+        navController.navigate(R.id.action_menu_home_to_menu_book_detail, bundle);
     }
 
     private void checkIfLogged() {
