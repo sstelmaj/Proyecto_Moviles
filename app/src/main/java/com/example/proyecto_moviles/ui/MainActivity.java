@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if(destination.getId() == R.id.login) {
+            if(destination.getId() == R.id.login || destination.getId() == R.id.registerFragment) {
                 bottomNavigationView.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
             } else if (destination.getId() == R.id.menu_add_suggestion){

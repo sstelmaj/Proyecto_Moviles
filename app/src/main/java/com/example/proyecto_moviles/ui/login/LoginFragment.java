@@ -74,6 +74,14 @@ public class LoginFragment extends Fragment {
                 iniciarSesion();
             }
         });
+
+        binding.btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navController = Navigation.findNavController(getView());
+                navController.navigate(R.id.registerFragment);
+            }
+        });
     }
 
     private void validateField(TextInputLayout textInputLayout, String text) {
